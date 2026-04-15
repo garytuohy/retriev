@@ -4,486 +4,330 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Documentation — Retriev</title>
-  <meta name="description" content="Get started with Retriev in 5 minutes. API docs, webhook setup, and integration guides.">
-  <link rel="preconnect" href="https://fonts.bunny.net">
-  <link href="https://fonts.bunny.net/css?family=inter:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+  <meta name="description" content="Get started with Retriev. Documentation for payment recovery, API integration, and webhook setup.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #080a0f;
-      --bg2: #0d1117;
-      --primary: #6366f1;
-      --accent: #8b5cf6;
-      --text: #ffffff;
-      --text-muted: rgba(255,255,255,0.55);
-      --card-bg: rgba(255,255,255,0.04);
-      --card-border: rgba(255,255,255,0.08);
-      --radius: 14px;
-      --radius-sm: 8px;
-      --code-bg: #161b22;
+    .docs-page {
+      display: flex;
+      min-height: 100vh;
     }
-    body {
-      font-family: 'Inter', -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-
-    /* NAV */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 40px;
-      background: rgba(8,10,15,0.9);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--card-border);
-    }
-    .nav-logo {
-      font-size: 22px; font-weight: 800;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      text-decoration: none;
-    }
-    .nav-links { display: flex; align-items: center; gap: 36px; }
-    .nav-links a {
-      color: var(--text-muted); text-decoration: none;
-      font-size: 15px; font-weight: 500; transition: color .2s;
-    }
-    .nav-links a:hover { color: var(--text); }
-    .nav-cta {
-      background: var(--primary); color: #fff !important;
-      padding: 10px 22px; border-radius: var(--radius-sm);
-      font-weight: 600; font-size: 14px !important;
-    }
-
-    /* LAYOUT */
-    .docs-layout {
-      display: grid; grid-template-columns: 240px 1fr;
-      min-height: 100vh; padding-top: 70px;
-    }
-    @media (max-width: 800px) {
-      .docs-layout { grid-template-columns: 1fr; }
-      .docs-sidebar { display: none; }
-    }
-
-    /* SIDEBAR */
     .docs-sidebar {
-      position: sticky; top: 90px; height: fit-content;
-      padding: 32px 24px; border-right: 1px solid var(--card-border);
+      width: 240px;
+      background: var(--bg-2);
+      border-right: 1px solid var(--border);
+      padding: 32px 16px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      overflow-y: auto;
     }
-    .sidebar-section { margin-bottom: 32px; }
-    .sidebar-title {
-      font-size: 11px; font-weight: 700;
-      color: var(--text-muted); text-transform: uppercase;
-      letter-spacing: 1px; margin-bottom: 12px;
+    .docs-sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 32px;
+      text-decoration: none;
+      padding: 0 8px;
     }
-    .sidebar-link {
-      display: block; padding: 8px 12px;
-      color: var(--text-muted); text-decoration: none;
-      font-size: 14px; border-radius: 6px;
-      transition: all .2s;
+    .docs-sidebar-logo svg {
+      width: 24px;
+      height: 24px;
+      color: var(--brand);
     }
-    .sidebar-link:hover { color: var(--text); background: rgba(255,255,255,0.03); }
-    .sidebar-link.active {
-      color: var(--primary);
-      background: rgba(99,102,241,0.1);
+    .docs-sidebar-logo span {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
     }
-
-    /* MAIN */
-    .docs-main {
-      padding: 48px 64px; max-width: 800px;
+    .docs-nav-section {
+      margin-bottom: 24px;
     }
-    @media (max-width: 800px) {
-      .docs-main { padding: 32px 24px; }
+    .docs-nav-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0 8px;
+      margin-bottom: 8px;
     }
-
+    .docs-nav a {
+      display: block;
+      padding: 8px;
+      color: var(--text-2);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      border-radius: var(--radius-sm);
+      transition: all 0.15s;
+    }
+    .docs-nav a:hover {
+      background: var(--bg-3);
+      color: var(--text);
+    }
+    .docs-nav a.active {
+      background: var(--brand-subtle);
+      color: var(--brand);
+    }
+    
+    .docs-content {
+      flex: 1;
+      margin-left: 240px;
+      padding: 64px;
+      max-width: 800px;
+    }
+    @media (max-width: 900px) {
+      .docs-sidebar { display: none; }
+      .docs-content { margin-left: 0; padding: 32px; }
+    }
+    
     .docs-header {
-      margin-bottom: 48px; padding-bottom: 32px;
-      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
     }
     .docs-header h1 {
-      font-size: 36px; font-weight: 800;
-      margin-bottom: 12px; letter-spacing: -1px;
+      font-size: 2rem;
+      margin-bottom: 12px;
     }
     .docs-header p {
-      font-size: 16px; color: var(--text-muted);
+      color: var(--text-2);
+      font-size: 1.0625rem;
     }
-
+    
     .docs-section {
-      margin-bottom: 64px;
+      margin-bottom: 48px;
     }
     .docs-section h2 {
-      font-size: 24px; font-weight: 700;
-      margin-bottom: 16px; margin-top: 48px;
-      scroll-margin-top: 100px;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
     }
     .docs-section h3 {
-      font-size: 18px; font-weight: 700;
-      margin-bottom: 12px; margin-top: 32px;
+      font-size: 1.125rem;
+      margin: 24px 0 12px;
     }
     .docs-section p {
-      margin-bottom: 16px; color: rgba(255,255,255,0.85);
+      color: var(--text-2);
+      line-height: 1.7;
+      margin-bottom: 16px;
     }
-    .docs-section ul, .docs-section ol {
-      margin-bottom: 16px; padding-left: 24px;
-    }
-    .docs-section li {
-      margin-bottom: 8px; color: rgba(255,255,255,0.85);
-    }
-
-    /* CODE */
-    pre {
-      background: var(--code-bg);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-sm);
-      padding: 16px 20px;
+    
+    .docs-code {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.875rem;
       overflow-x: auto;
-      margin-bottom: 20px;
+      margin: 16px 0;
     }
-    code {
-      font-family: 'SF Mono', Monaco, 'Courier New', monospace;
-      font-size: 13px;
-      color: #e6edf3;
+    .docs-code code {
+      color: var(--text);
     }
-    .code-inline {
-      background: var(--code-bg);
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 13px;
+    
+    .docs-list {
+      list-style: none;
+      margin: 16px 0;
     }
-
-    /* CALLOUT */
-    .callout {
-      background: rgba(99,102,241,0.08);
-      border: 1px solid rgba(99,102,241,0.2);
-      border-radius: var(--radius-sm);
+    .docs-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 8px 0;
+      color: var(--text-2);
+    }
+    .docs-list li svg {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: var(--success);
+      margin-top: 2px;
+    }
+    
+    .docs-callout {
       padding: 16px 20px;
-      margin-bottom: 20px;
+      background: var(--brand-subtle);
+      border-left: 3px solid var(--brand);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 16px 0;
     }
-    .callout-title {
-      font-size: 14px; font-weight: 700;
-      color: #a5b4fc; margin-bottom: 8px;
+    .docs-callout p {
+      margin: 0;
+      color: var(--text);
     }
-    .callout p {
-      margin: 0; font-size: 14px;
-    }
-    .callout.warning {
-      background: rgba(245,158,11,0.08);
-      border-color: rgba(245,158,11,0.2);
-    }
-    .callout.warning .callout-title { color: #fbbf24; }
-
-    /* STEPS */
-    .steps { counter-reset: step; }
-    .step {
-      position: relative; padding-left: 48px;
-      margin-bottom: 32px;
-    }
-    .step::before {
-      counter-increment: step;
-      content: counter(step);
-      position: absolute; left: 0; top: 0;
-      width: 32px; height: 32px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; font-weight: 700;
-    }
-
-    /* FOOTER */
-    footer {
-      border-top: 1px solid var(--card-border);
-      padding: 48px 0; margin-top: 64px;
-    }
-    .footer-inner {
-      max-width: 1100px; margin: 0 auto; padding: 0 24px;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 24px;
-    }
-    .footer-logo {
-      font-size: 20px; font-weight: 800;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .footer-links { display: flex; gap: 24px; }
-    .footer-links a {
-      color: var(--text-muted); text-decoration: none;
-      font-size: 14px;
-    }
-    .footer-copy { font-size: 13px; color: var(--text-muted); }
   </style>
 </head>
 <body>
-
-<nav>
-  <a href="index.html" class="nav-logo">Retriev</a>
-  <div class="nav-links">
-    <a href="index.html#features">Features</a>
-    <a href="index.html#pricing">Pricing</a>
-    <a href="docs.html">Docs</a>
-    <a href="blog.html">Blog</a>
-    <a href="login.html" class="nav-cta">Login</a>
-  </div>
-</nav>
-
-<div class="docs-layout">
-  <!-- SIDEBAR -->
-  <aside class="docs-sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-title">Getting Started</div>
-      <a href="#quickstart" class="sidebar-link active">Quick Start</a>
-      <a href="#connect" class="sidebar-link">Connect Stripe</a>
-      <a href="#webhooks" class="sidebar-link">Webhook Setup</a>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-title">API Reference</div>
-      <a href="#api-auth" class="sidebar-link">Authentication</a>
-      <a href="#api-endpoints" class="sidebar-link">Endpoints</a>
-      <a href="#api-errors" class="sidebar-link">Error Codes</a>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-title">Guides</div>
-      <a href="#email-templates" class="sidebar-link">Email Templates</a>
-      <a href="#sequences" class="sidebar-link">Dunning Sequences</a>
-      <a href="#analytics" class="sidebar-link">Analytics</a>
-    </div>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="docs-main">
-    <header class="docs-header">
-      <h1>Documentation</h1>
-      <p>Get started with Retriev in under 5 minutes. Connect Stripe, configure webhooks, and start recovering failed payments.</p>
-    </header>
-
-    <!-- QUICK START -->
-    <section id="quickstart" class="docs-section">
-      <h2>Quick Start</h2>
-      <p>Retriev integrates with your Stripe account to automatically detect failed payments and initiate AI-powered recovery sequences. Here's how to get up and running.</p>
-
-      <div class="steps">
-        <div class="step">
-          <h3>Create your account</h3>
-          <p>Sign up at <a href="signup.html" style="color:var(--primary)">retriev.pages.dev/signup</a>. You'll get a 14-day free trial with no credit card required.</p>
+  <div class="docs-page">
+    <!-- Sidebar -->
+    <aside class="docs-sidebar">
+      <a href="/" class="docs-sidebar-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+        <span>Retriev</span>
+      </a>
+      
+      <nav class="docs-nav">
+        <div class="docs-nav-section">
+          <div class="docs-nav-title">Getting started</div>
+          <a href="#quickstart" class="active">Quickstart</a>
+          <a href="#stripe">Connect Stripe</a>
+          <a href="#webhooks">Webhooks</a>
         </div>
-        <div class="step">
-          <h3>Connect Stripe</h3>
-          <p>Click "Connect with Stripe" in onboarding. You'll be redirected to Stripe to authorize read/write access to payment events.</p>
+        <div class="docs-nav-section">
+          <div class="docs-nav-title">Features</div>
+          <a href="#dunning">Dunning sequences</a>
+          <a href="#timing">Smart retry timing</a>
+          <a href="#analytics">Analytics</a>
         </div>
-        <div class="step">
-          <h3>Add webhook endpoint</h3>
-          <p>In Stripe Dashboard → Developers → Webhooks, add our endpoint. This enables real-time failed payment detection.</p>
+        <div class="docs-nav-section">
+          <div class="docs-nav-title">API</div>
+          <a href="#api-auth">Authentication</a>
+          <a href="#api-endpoints">Endpoints</a>
         </div>
-        <div class="step">
-          <h3>Watch it work</h3>
-          <p>Once connected, Retriev automatically monitors for failed payments and starts recovery sequences. First recovery typically happens within 48 hours.</p>
-        </div>
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="docs-content">
+      <div class="docs-header">
+        <h1>Documentation</h1>
+        <p>Get started with Retriev in under 5 minutes. Connect Stripe, enable webhooks, and start recovering failed payments.</p>
       </div>
 
-      <div class="callout">
-        <div class="callout-title">⚡ Zero code required</div>
-        <p>The entire setup is done via OAuth and webhooks. No SDKs to install, no backend changes needed.</p>
-      </div>
-    </section>
+      <section class="docs-section" id="quickstart">
+        <h2>Quickstart</h2>
+        <p>Retriev connects to your Stripe account and automatically monitors for failed payments. When a payment fails, we trigger a smart recovery sequence optimized for each customer.</p>
+        
+        <h3>Setup steps</h3>
+        <ul class="docs-list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Create your Retriev account
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Connect your Stripe account via OAuth
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Configure webhook endpoint in Stripe dashboard
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Customize your dunning email templates (optional)
+          </li>
+        </ul>
+        
+        <p>Most customers see their first recovered payment within 48 hours of connecting.</p>
+      </section>
 
-    <!-- CONNECT STRIPE -->
-    <section id="connect" class="docs-section">
-      <h2>Connect Stripe</h2>
-      <p>Retriev uses Stripe Connect for secure, read-write access to your payment events. We never store your secret key.</p>
+      <section class="docs-section" id="stripe">
+        <h2>Connect Stripe</h2>
+        <p>Use Stripe Connect to authorize Retriev to monitor your payment events. We request read-write access to:</p>
+        
+        <ul class="docs-list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Read payment intents and invoices
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Create retry attempts for failed payments
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Receive webhooks for payment events
+          </li>
+        </ul>
+        
+        <div class="docs-callout">
+          <p>We never store your Stripe secret key. OAuth tokens are encrypted and stored securely.</p>
+        </div>
+      </section>
 
-      <h3>What permissions we request</h3>
-      <ul>
-        <li><code class="code-inline">payment_intent:read</code> — Read payment details</li>
-        <li><code class="code-inline">payment_intent:write</code> — Retry failed charges</li>
-        <li><code class="code-inline">customer:read</code> — Fetch customer email/name</li>
-        <li><code class="code-inline">invoice:read</code> — Read subscription invoices</li>
-      </ul>
-
-      <h3>Disconnecting</h3>
-      <p>You can disconnect Retriev anytime from your Stripe Dashboard → Connected Apps. All recovery sequences will stop immediately.</p>
-    </section>
-
-    <!-- WEBHOOKS -->
-    <section id="webhooks" class="docs-section">
-      <h2>Webhook Setup</h2>
-      <p>To receive real-time payment events, add our webhook endpoint to your Stripe dashboard.</p>
-
-      <h3>Endpoint URL</h3>
-      <pre><code>https://retriev-api.garytuohy.workers.dev/api/webhook</code></pre>
-
-      <h3>Events to enable</h3>
-      <p>In the Stripe webhook configuration, subscribe to these events:</p>
-      <pre><code>payment_intent.payment_failed
+      <section class="docs-section" id="webhooks">
+        <h2>Webhook setup</h2>
+        <p>Add a webhook endpoint in your Stripe dashboard to notify Retriev of payment events.</p>
+        
+        <h3>Endpoint URL</h3>
+        <div class="docs-code">
+          <code>https://retriev-api.garytuohy.workers.dev/api/webhook</code>
+        </div>
+        
+        <h3>Required events</h3>
+        <div class="docs-code">
+          <code>payment_intent.payment_failed
 invoice.payment_failed
 invoice.paid
 customer.subscription.deleted
-checkout.session.completed</code></pre>
+checkout.session.completed</code>
+        </div>
+        
+        <p>Copy the signing secret from Stripe and add it to your Retriev settings to enable webhook verification.</p>
+      </section>
 
-      <h3>Verifying the webhook</h3>
-      <p>After adding the endpoint, Stripe will send a test event. Check your Retriev dashboard — you should see "Webhook active" in Settings.</p>
+      <section class="docs-section" id="dunning">
+        <h2>Dunning sequences</h2>
+        <p>Retriev uses multi-email sequences to recover failed payments. Each sequence is personalized based on customer history and payment patterns.</p>
+        
+        <h3>Default sequence</h3>
+        <ul class="docs-list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Day 1: Soft reminder
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Day 3: Retry notification
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Day 7: Urgency reminder
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Day 14: Final attempt
+          </li>
+        </ul>
+      </section>
 
-      <div class="callout warning">
-        <div class="callout-title">⚠️ Webhook Secret</div>
-        <p>Stripe provides a webhook signing secret. This is automatically configured when you connect via OAuth — no manual entry needed.</p>
-      </div>
-    </section>
+      <section class="docs-section" id="api-auth">
+        <h2>API authentication</h2>
+        <p>All API requests require a Bearer token in the Authorization header.</p>
+        
+        <div class="docs-code">
+          <code>Authorization: Bearer YOUR_TOKEN</code>
+        </div>
+        
+        <p>Get your token from the Retriev dashboard after logging in.</p>
+      </section>
 
-    <!-- API AUTH -->
-    <section id="api-auth" class="docs-section">
-      <h2>API Authentication</h2>
-      <p>All API requests require authentication via Bearer token in the Authorization header.</p>
-
-      <h3>Getting your API key</h3>
-      <p>API access is available on the Scale plan. Generate keys from Settings → Integrations.</p>
-
-      <h3>Using the API key</h3>
-      <pre><code>curl -H "Authorization: Bearer retr_live_xxx" \
-  https://retriev-api.garytuohy.workers.dev/api/me</code></pre>
-    </section>
-
-    <!-- API ENDPOINTS -->
-    <section id="api-endpoints" class="docs-section">
-      <h2>API Endpoints</h2>
-
-      <h3>GET /api/auth/me</h3>
-      <p>Returns the authenticated user's profile.</p>
-      <pre><code>{
-  "user": {
-    "id": "usr_abc123",
-    "email": "jane@company.com",
-    "plan": "growth",
-    "stripeConnected": true
-  }
-}</code></pre>
-
-      <h3>GET /api/dashboard/stats</h3>
-      <p>Returns recovery metrics for the authenticated account.</p>
-      <pre><code>{
-  "recoveredMonth": 12480,
-  "recoveryRate": 73,
-  "activeSequences": 24,
-  "totalRecovered": 89200
-}</code></pre>
-
-      <h3>GET /api/dashboard/payments</h3>
-      <p>Returns a paginated list of failed payments being tracked.</p>
-      <pre><code>{
-  "payments": [
-    {
-      "id": "pay_xyz",
-      "customerEmail": "user@example.com",
-      "amount": 2900,
-      "currency": "usd",
-      "status": "recovering",
-      "failedAt": "2025-03-15T10:30:00Z",
-      "nextRetry": "2025-03-17T14:00:00Z"
-    }
-  ]
-}</code></pre>
-    </section>
-
-    <!-- EMAIL TEMPLATES -->
-    <section id="email-templates" class="docs-section">
-      <h2>Email Templates</h2>
-      <p>Retriev uses AI-personalized email sequences. You can customize templates from Settings.</p>
-
-      <h3>Default sequence</h3>
-      <ul>
-        <li><strong>Day 1</strong> — Soft reminder, friendly tone</li>
-        <li><strong>Day 3</strong> — Follow-up, still friendly</li>
-        <li><strong>Day 7</strong> — Urgency increases</li>
-        <li><strong>Day 14</strong> — Final notice before account action</li>
-      </ul>
-
-      <h3>Template variables</h3>
-      <p>Use these variables in your templates:</p>
-      <pre><code>{{customer_name}}  — Customer's first name
-{{amount}}         — Payment amount (formatted: $29.00)
-{{company_name}}   — Your company name
-{{update_link}}    — Stripe-hosted update URL</code></pre>
-    </section>
-
-    <!-- SEQUENCES -->
-    <section id="sequences" class="docs-section">
-      <h2>Dunning Sequences</h2>
-      <p>When a payment fails, Retriev creates a recovery sequence optimized for that customer.</p>
-
-      <h3>How it works</h3>
-      <ol>
-        <li>Stripe webhook fires <code class="code-inline">payment_intent.payment_failed</code></li>
-        <li>Retriev creates a sequence entry</li>
-        <li>AI analyzes customer history to determine optimal send time</li>
-        <li>First email sent at calculated optimal time</li>
-        <li>Retries scheduled based on payment method type</li>
-      </ol>
-
-      <h3>Smart retry timing</h3>
-      <p>Our AI determines the best retry window based on:</p>
-      <ul>
-        <li>Customer's timezone</li>
-        <li>Historical payment patterns</li>
-        <li>Failure reason (card expired vs. insufficient funds)</li>
-        <li>Previous recovery success rate for similar profiles</li>
-      </ul>
-    </section>
-
-    <!-- ANALYTICS -->
-    <section id="analytics" class="docs-section">
-      <h2>Analytics</h2>
-      <p>The Analytics dashboard provides deep insights into your recovery performance.</p>
-
-      <h3>Key metrics</h3>
-      <ul>
-        <li><strong>Recovery Rate</strong> — % of failed payments successfully recovered</li>
-        <li><strong>Revenue Recovered</strong> — Total dollar amount recovered</li>
-        <li><strong>Average Recovery Time</strong> — Days from failure to successful payment</li>
-        <li><strong>Churn Prevented</strong> — Customers retained who would have churned</li>
-      </ul>
-
-      <h3>AI Insights</h3>
-      <p>The Insights panel surfaces actionable recommendations based on your data:</p>
-      <ul>
-        <li>Optimal email send times for your customer base</li>
-        <li>At-risk customers showing churn signals</li>
-        <li>Template tone performance (friendly vs. professional)</li>
-      </ul>
-    </section>
-
-  </main>
-</div>
-
-<footer>
-  <div class="footer-inner">
-    <div class="footer-logo">Retriev</div>
-    <div class="footer-links">
-      <a href="index.html">Home</a>
-      <a href="blog.html">Blog</a>
-      <a href="about.html">About</a>
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
-    </div>
-    <div class="footer-copy">© 2025 Retriev</div>
+      <section class="docs-section" id="api-endpoints">
+        <h2>API endpoints</h2>
+        
+        <h3>GET /api/dashboard/stats</h3>
+        <p>Returns recovery metrics for the authenticated account.</p>
+        <div class="docs-code">
+          <code>{
+  "recovered_month": 12450,
+  "recovery_rate": 0.73,
+  "active_sequences": 24,
+  "total_recovered": 47200
+}</code>
+        </div>
+        
+        <h3>GET /api/dashboard/payments</h3>
+        <p>Returns a list of recent failed payments and their recovery status.</p>
+        
+        <h3>GET /api/dashboard/sequences</h3>
+        <p>Returns active dunning sequences with progress metrics.</p>
+      </section>
+    </main>
   </div>
-</footer>
-
-<script>
-  // Smooth scroll and active section highlighting
-  const sections = document.querySelectorAll('.docs-section[id]');
-  const links = document.querySelectorAll('.sidebar-link');
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        links.forEach(l => l.classList.remove('active'));
-        const active = document.querySelector(`.sidebar-link[href="#${entry.target.id}"]`);
-        if (active) active.classList.add('active');
-      }
-    });
-  }, { rootMargin: '-20% 0px -70% 0px' });
-
-  sections.forEach(s => observer.observe(s));
-</script>
-
 </body>
 </html>

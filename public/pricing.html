@@ -4,485 +4,294 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pricing — Retriev</title>
-  <link rel="preconnect" href="https://fonts.bunny.net">
-  <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900&display=swap" rel="stylesheet">
+  <meta name="description" content="Simple pricing for SaaS payment recovery. Pay a flat fee plus success fee on recovered revenue.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #080a0f;
-      --primary: #6366f1;
-      --accent: #8b5cf6;
-      --text: #ffffff;
-      --text-muted: rgba(255,255,255,0.5);
-      --card-bg: rgba(255,255,255,0.04);
-      --card-border: rgba(255,255,255,0.08);
-      --radius: 14px;
-      --radius-sm: 8px;
+    .pricing-hero {
+      padding: 120px 24px 80px;
+      text-align: center;
     }
-    body {
-      font-family: 'Inter', -apple-system, sans-serif;
-      background: var(--bg); color: var(--text);
-      overflow-x: hidden;
+    .pricing-hero h1 {
+      margin-bottom: 16px;
     }
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 40px;
-      background: rgba(8,10,15,0.9); backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--card-border);
+    .pricing-hero p {
+      color: var(--text-2);
+      font-size: 1.125rem;
+      max-width: 560px;
+      margin: 0 auto;
     }
-    .nav-logo {
-      font-size: 22px; font-weight: 800;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      text-decoration: none;
+    
+    .pricing-section {
+      padding: 0 24px 80px;
     }
-    .nav-links { display: flex; gap: 32px; align-items: center; }
-    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 15px; font-weight: 500; transition: color .2s; }
-    .nav-links a:hover { color: var(--text); }
-    .nav-links .cta {
-      background: var(--primary); color: #fff !important;
-      padding: 9px 20px; border-radius: 8px; font-weight: 600; font-size: 14px !important;
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
     }
-
-    .hero {
-      padding: 160px 24px 80px; text-align: center;
-      background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(99,102,241,0.2) 0%, transparent 70%);
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.25);
-      padding: 7px 16px; border-radius: 100px;
-      font-size: 13px; font-weight: 600; color: #a5b4fc; margin-bottom: 24px;
-    }
-    .hero h1 { font-size: clamp(40px, 6vw, 64px); font-weight: 900; letter-spacing: -2px; margin-bottom: 18px; }
-    .hero p { font-size: 18px; color: var(--text-muted); max-width: 520px; margin: 0 auto 48px; line-height: 1.7; }
-
-    .toggle-wrap { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 60px; }
-    .toggle-label { font-size: 14px; color: var(--text-muted); font-weight: 500; }
-    .toggle {
-      position: relative; width: 52px; height: 28px;
-      background: rgba(255,255,255,0.08); border-radius: 100px; cursor: pointer; border: none;
-      transition: background .2s;
-    }
-    .toggle.on { background: var(--primary); }
-    .toggle::after {
-      content: ''; position: absolute;
-      width: 20px; height: 20px; border-radius: 50%; background: #fff;
-      top: 4px; left: 4px; transition: left .2s;
-    }
-    .toggle.on::after { left: 28px; }
-    .save-badge {
-      background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3);
-      color: #10b981; font-size: 12px; font-weight: 700;
-      padding: 3px 10px; border-radius: 100px;
-    }
-
-    /* PRICING CARDS */
-    .pricing-section { padding: 0 24px 80px; }
-    .container { max-width: 1080px; margin: 0 auto; }
-    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 80px; }
-
-    .pricing-card {
-      background: var(--card-bg); border: 1px solid var(--card-border);
-      border-radius: var(--radius); padding: 36px 28px;
-      position: relative; overflow: hidden;
-      transition: transform .3s, border-color .3s;
-    }
-    .pricing-card:hover { transform: translateY(-4px); }
-    .pricing-card.featured {
-      background: linear-gradient(160deg, rgba(99,102,241,0.1), rgba(139,92,246,0.06));
-      border-color: rgba(99,102,241,0.35);
-    }
-    .pricing-card.featured::before {
-      content: '★ Most Popular';
-      position: absolute; top: 18px; right: 18px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: #fff; font-size: 11px; font-weight: 700;
-      padding: 4px 12px; border-radius: 100px;
-    }
-    .plan-name { font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
-    .plan-price { font-size: 54px; font-weight: 900; letter-spacing: -2px; line-height: 1; margin-bottom: 6px; }
-    .plan-price sup { font-size: 24px; letter-spacing: 0; }
-    .plan-period { font-size: 14px; color: var(--text-muted); margin-bottom: 8px; }
-    .plan-commission {
-      display: inline-block; margin-bottom: 28px;
-      background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.2);
-      color: #a5b4fc; font-size: 12px; font-weight: 700;
-      padding: 4px 12px; border-radius: 100px;
-    }
-    .plan-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 28px; }
-    .btn-card {
-      display: block; width: 100%; padding: 13px; text-align: center;
-      border-radius: var(--radius-sm); font-size: 14px; font-weight: 700;
-      cursor: pointer; font-family: inherit; text-decoration: none;
-      transition: all .2s; margin-bottom: 28px;
-    }
-    .btn-outline-card {
-      border: 1px solid rgba(255,255,255,0.15); background: transparent; color: var(--text);
-    }
-    .btn-outline-card:hover { border-color: var(--primary); color: var(--primary); }
-    .btn-filled-card {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: #fff; border: none;
-    }
-    .btn-filled-card:hover { opacity: 0.9; transform: translateY(-1px); }
-    .plan-features { list-style: none; }
-    .plan-features li {
-      display: flex; align-items: flex-start; gap: 10px;
-      font-size: 13px; padding: 9px 0; color: rgba(255,255,255,0.8);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .plan-features li:last-child { border-bottom: none; }
-    .plan-features li .check { color: var(--primary); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-    .plan-features li .x { color: rgba(255,255,255,0.2); flex-shrink: 0; }
-
-    /* COMPARISON TABLE */
-    .compare-section { padding: 0 24px 100px; }
-    .compare-title { font-size: 32px; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
-    .compare-sub { font-size: 16px; color: var(--text-muted); margin-bottom: 48px; }
-    .compare-table { width: 100%; border-collapse: collapse; }
-    .compare-table thead th {
-      padding: 16px 24px; text-align: left;
-      font-size: 15px; font-weight: 700;
-      border-bottom: 2px solid var(--card-border);
-    }
-    .compare-table thead th:first-child { width: 40%; }
-    .compare-table thead .featured-col {
-      background: rgba(99,102,241,0.08); border-radius: 12px 12px 0 0;
-    }
-    .compare-table tbody td {
-      padding: 14px 24px; font-size: 14px;
-      border-bottom: 1px solid var(--card-border);
-    }
-    .compare-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
-    .compare-table tbody td:not(:first-child) { text-align: center; }
-    .compare-table .featured-col { background: rgba(99,102,241,0.04); }
-    .compare-table .section-row td {
-      padding-top: 32px; padding-bottom: 8px;
-      font-size: 11px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 1px; color: var(--primary); border-bottom: none;
-    }
-    .check-icon { color: #10b981; font-size: 16px; font-weight: 700; }
-    .x-icon { color: rgba(255,255,255,0.2); font-size: 16px; }
-    .val { font-weight: 600; }
-
-    /* FAQ */
-    .faq-section { padding: 0 24px 100px; background: rgba(13,17,23,0.5); }
-    .faq-inner { max-width: 800px; margin: 0 auto; padding-top: 80px; }
-    .faq-section h2 { font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
-    .faq-section .sub { font-size: 16px; color: var(--text-muted); margin-bottom: 48px; }
-    .faq-item {
-      border-bottom: 1px solid var(--card-border); padding: 24px 0; cursor: pointer;
-    }
-    .faq-q { font-size: 16px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
-    .faq-q .arrow { color: var(--text-muted); transition: transform .2s; font-size: 18px; }
-    .faq-a { font-size: 14px; color: var(--text-muted); line-height: 1.7; margin-top: 14px; display: none; }
-    .faq-item.open .faq-a { display: block; }
-    .faq-item.open .arrow { transform: rotate(180deg); }
-
-    footer {
-      padding: 48px 24px;
-      border-top: 1px solid var(--card-border);
-    }
-    .footer-inner { max-width: 1080px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-    .footer-logo { font-size: 20px; font-weight: 800; background: linear-gradient(135deg, #6366f1, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; margin-left: 28px; transition: color .2s; }
-    .footer-links a:hover { color: var(--text); }
-    .footer-copy { color: var(--text-muted); font-size: 13px; }
-
     @media (max-width: 900px) {
-      nav { padding: 16px 24px; }
-      .nav-links { display: none; }
-      .pricing-grid { grid-template-columns: 1fr; }
-      .compare-table { font-size: 12px; }
-      .compare-table thead th, .compare-table tbody td { padding: 12px 12px; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
+    }
+    .plan-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      position: relative;
+    }
+    .plan-card.featured {
+      border-color: var(--brand);
+    }
+    .plan-card.featured::before {
+      content: 'Most popular';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--brand);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 9999px;
+    }
+    .plan-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .plan-price {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .plan-price span {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-3);
+    }
+    .plan-fee {
+      font-size: 0.9375rem;
+      color: var(--text-2);
+      margin-bottom: 24px;
+    }
+    .plan-features {
+      list-style: none;
+      margin-bottom: 28px;
+    }
+    .plan-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      font-size: 0.9375rem;
+      color: var(--text-2);
+    }
+    .plan-features li svg {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: var(--success);
+    }
+    .plan-card .btn {
+      width: 100%;
+    }
+    
+    .pricing-faq {
+      padding: 80px 24px;
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+    }
+    .pricing-faq-content {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .pricing-faq h2 {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      padding: 24px 0;
+    }
+    .faq-q {
+      font-size: 1.0625rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .faq-a {
+      color: var(--text-2);
+      font-size: 0.9375rem;
+      line-height: 1.7;
     }
   </style>
 </head>
 <body>
+  <!-- Navigation -->
+  <nav class="nav" style="position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; background: rgba(9, 9, 11, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);">
+    <a href="/" style="font-size: 20px; font-weight: 700; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Retriev
+    </a>
+    <div style="display: flex; align-items: center; gap: 24px;">
+      <a href="/login.html" style="color: var(--text-2); text-decoration: none; font-size: 0.9375rem;">Log in</a>
+      <a href="/signup.html" class="btn btn-primary btn-sm">Start free trial</a>
+    </div>
+  </nav>
 
-<nav>
-  <a href="index.html" class="nav-logo">Retriev</a>
-  <div class="nav-links">
-    <a href="index.html#features">Features</a>
-    <a href="index.html#how-it-works">How it Works</a>
-    <a href="login.html">Login</a>
-    <a href="signup.html" class="cta">Get Early Access</a>
-  </div>
-</nav>
+  <!-- Hero -->
+  <section class="pricing-hero">
+    <h1>Simple pricing</h1>
+    <p>Pay a flat monthly fee plus a success fee on recovered revenue. We only win when you win.</p>
+  </section>
 
-<section class="hero">
-  <div class="hero-badge">💎 Simple, transparent pricing</div>
-  <h1>Only pay when<br>you recover revenue</h1>
-  <p>A small monthly base fee plus a success fee on recovered payments. We win when you win.</p>
-
-  <div class="toggle-wrap">
-    <span class="toggle-label">Monthly</span>
-    <button class="toggle" id="billingToggle" onclick="toggleBilling()" aria-label="Toggle billing"></button>
-    <span class="toggle-label">Annual</span>
-    <span class="save-badge">Save 20%</span>
-  </div>
-</section>
-
-<section class="pricing-section">
-  <div class="container">
+  <!-- Pricing Cards -->
+  <section class="pricing-section">
     <div class="pricing-grid">
-      <!-- STARTER -->
-      <div class="pricing-card">
+      <div class="plan-card">
         <div class="plan-name">Starter</div>
-        <div class="plan-price"><sup>$</sup><span class="price-val">29</span></div>
-        <div class="plan-period">per month</div>
-        <div class="plan-commission">+ 8% of recovered revenue</div>
-        <div class="plan-desc">Perfect for early-stage SaaS under $5K MRR starting to take payment recovery seriously.</div>
-        <a href="signup.html" class="btn-card btn-outline-card">Start free trial</a>
+        <div class="plan-price">$29<span>/mo</span></div>
+        <div class="plan-fee">+ 8% of recovered revenue</div>
         <ul class="plan-features">
-          <li><span class="check">✓</span> Up to $5K MRR</li>
-          <li><span class="check">✓</span> Smart retry timing (AI)</li>
-          <li><span class="check">✓</span> 3-email dunning sequences</li>
-          <li><span class="check">✓</span> Basic analytics dashboard</li>
-          <li><span class="check">✓</span> Stripe integration</li>
-          <li><span class="check">✓</span> Email support (48h SLA)</li>
-          <li><span class="x">✕</span> AI-personalised emails</li>
-          <li><span class="x">✕</span> Churn prediction</li>
-          <li><span class="x">✕</span> Slack integration</li>
-          <li><span class="x">✕</span> API access</li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Up to $5K MRR
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Smart retry timing
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            3-email dunning sequences
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Basic analytics
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Email support
+          </li>
         </ul>
+        <a href="/signup.html" class="btn btn-ghost">Start free trial</a>
       </div>
 
-      <!-- GROWTH -->
-      <div class="pricing-card featured">
+      <div class="plan-card featured">
         <div class="plan-name">Growth</div>
-        <div class="plan-price"><sup>$</sup><span class="price-val">99</span></div>
-        <div class="plan-period">per month</div>
-        <div class="plan-commission">+ 5% of recovered revenue</div>
-        <div class="plan-desc">For growing SaaS with serious revenue at stake. AI personalisation kicks in and lifts recovery rates dramatically.</div>
-        <a href="signup.html" class="btn-card btn-filled-card">Start free trial</a>
+        <div class="plan-price">$99<span>/mo</span></div>
+        <div class="plan-fee">+ 5% of recovered revenue</div>
         <ul class="plan-features">
-          <li><span class="check">✓</span> Up to $50K MRR</li>
-          <li><span class="check">✓</span> Smart retry timing (AI)</li>
-          <li><span class="check">✓</span> 6-email dunning sequences</li>
-          <li><span class="check">✓</span> Advanced analytics</li>
-          <li><span class="check">✓</span> Stripe integration</li>
-          <li><span class="check">✓</span> Priority support (12h SLA)</li>
-          <li><span class="check">✓</span> AI-personalised emails</li>
-          <li><span class="check">✓</span> Churn prediction alerts</li>
-          <li><span class="check">✓</span> Slack integration</li>
-          <li><span class="x">✕</span> API access</li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Up to $50K MRR
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            AI-personalized emails
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            6-email dunning sequences
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Churn prediction alerts
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Advanced analytics
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Priority support
+          </li>
         </ul>
+        <a href="/signup.html" class="btn btn-primary">Start free trial</a>
       </div>
 
-      <!-- SCALE -->
-      <div class="pricing-card">
+      <div class="plan-card">
         <div class="plan-name">Scale</div>
-        <div class="plan-price"><sup>$</sup><span class="price-val">299</span></div>
-        <div class="plan-period">per month</div>
-        <div class="plan-commission">+ 3% of recovered revenue</div>
-        <div class="plan-desc">For scaling businesses with $50K+ MRR where every percentage point of recovery rate matters.</div>
-        <a href="signup.html" class="btn-card btn-outline-card">Start free trial</a>
+        <div class="plan-price">$299<span>/mo</span></div>
+        <div class="plan-fee">+ 3% of recovered revenue</div>
         <ul class="plan-features">
-          <li><span class="check">✓</span> Unlimited MRR</li>
-          <li><span class="check">✓</span> Smart retry timing (AI)</li>
-          <li><span class="check">✓</span> Unlimited dunning emails</li>
-          <li><span class="check">✓</span> Full analytics + API</li>
-          <li><span class="check">✓</span> All integrations</li>
-          <li><span class="check">✓</span> Dedicated account manager</li>
-          <li><span class="check">✓</span> AI-personalised emails</li>
-          <li><span class="check">✓</span> Churn prediction + scoring</li>
-          <li><span class="check">✓</span> Custom AI sequences</li>
-          <li><span class="check">✓</span> Full API access + SLA</li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Unlimited MRR
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Custom AI sequences
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Full analytics API
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Custom integrations
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Dedicated account manager
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            SLA guarantee
+          </li>
         </ul>
+        <a href="/signup.html" class="btn btn-ghost">Contact sales</a>
       </div>
     </div>
+  </section>
 
-    <!-- COMPARISON TABLE -->
-    <div class="compare-section" style="padding: 0 0 80px;">
-      <div class="compare-title">Full feature comparison</div>
-      <div class="compare-sub">Everything you need to make the right choice</div>
-      <div style="overflow-x:auto">
-        <table class="compare-table">
-          <thead>
-            <tr>
-              <th>Feature</th>
-              <th>Starter</th>
-              <th class="featured-col">Growth</th>
-              <th>Scale</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="section-row"><td colspan="4">Core Recovery</td></tr>
-            <tr>
-              <td>Smart AI retry timing</td>
-              <td><span class="check-icon">✓</span></td>
-              <td class="featured-col"><span class="check-icon">✓</span></td>
-              <td><span class="check-icon">✓</span></td>
-            </tr>
-            <tr>
-              <td>Dunning email sequences</td>
-              <td class="val">3 emails</td>
-              <td class="featured-col val">6 emails</td>
-              <td class="val">Unlimited</td>
-            </tr>
-            <tr>
-              <td>AI-personalised email content</td>
-              <td><span class="x-icon">✕</span></td>
-              <td class="featured-col"><span class="check-icon">✓</span></td>
-              <td><span class="check-icon">✓</span></td>
-            </tr>
-            <tr>
-              <td>Custom email templates</td>
-              <td><span class="x-icon">✕</span></td>
-              <td class="featured-col"><span class="check-icon">✓</span></td>
-              <td><span class="check-icon">✓</span></td>
-            </tr>
-            <tr>
-              <td>MRR cap</td>
-              <td class="val">$5K</td>
-              <td class="featured-col val">$50K</td>
-              <td class="val">Unlimited</td>
-            </tr>
-
-            <tr class="section-row"><td colspan="4">Analytics & Insights</td></tr>
-            <tr>
-              <td>Recovery rate dashboard</td>
-              <td><span class="check-icon">✓</span></td>
-              <td class="featured-col"><span class="check-icon">✓</span></td>
-              <td><span class="check-icon">✓</span></td>
-            </tr>
-            <tr>
-              <td>Revenue recovered tracking</td>
-              <td><span class="check-icon">✓</span></td>
-              <td class="featured-col"><span class="check-icon">✓</span></td>
-              <td><span class="check-icon">✓</span></td>
-            </tr>
-            <tr>
-              <td>Churn prediction</td>
-              <td><span class="x-icon">✕</span></td>
-              <td class="featured-col"><span class="check-icon">✓</span></td>
-              <td><span class="check-icon">✓</span></td>
-            </tr>
-            <tr>
-              <td>Customer risk scoring</td>
-              <td><span class="x-icon">✕</span></td>
-              <td class="featured-col"><span class="x-icon">✕</span></td>
-              <td><span class="check-icon">✓</span></td>
-            </tr>
-            <tr>
-              <td>Full analytics API</td>
-              <td><span class="x-icon">✕</span></td>
-              <td class="featured-col"><span class="x-icon">✕</span></td>
-              <td><span class="check-icon">✓</span></td>
-            </tr>
-
-            <tr class="section-row"><td colspan="4">Integrations</td></tr>
-            <tr>
-              <td>Stripe integration</td>
-              <td><span class="check-icon">✓</span></td>
-              <td class="featured-col"><span class="check-icon">✓</span></td>
-              <td><span class="check-icon">✓</span></td>
-            </tr>
-            <tr>
-              <td>Slack notifications</td>
-              <td><span class="x-icon">✕</span></td>
-              <td class="featured-col"><span class="check-icon">✓</span></td>
-              <td><span class="check-icon">✓</span></td>
-            </tr>
-            <tr>
-              <td>Webhook support</td>
-              <td><span class="x-icon">✕</span></td>
-              <td class="featured-col"><span class="check-icon">✓</span></td>
-              <td><span class="check-icon">✓</span></td>
-            </tr>
-            <tr>
-              <td>Custom integrations</td>
-              <td><span class="x-icon">✕</span></td>
-              <td class="featured-col"><span class="x-icon">✕</span></td>
-              <td><span class="check-icon">✓</span></td>
-            </tr>
-
-            <tr class="section-row"><td colspan="4">Support</td></tr>
-            <tr>
-              <td>Email support</td>
-              <td class="val">48h SLA</td>
-              <td class="featured-col val">12h SLA</td>
-              <td class="val">4h SLA</td>
-            </tr>
-            <tr>
-              <td>Dedicated account manager</td>
-              <td><span class="x-icon">✕</span></td>
-              <td class="featured-col"><span class="x-icon">✕</span></td>
-              <td><span class="check-icon">✓</span></td>
-            </tr>
-            <tr>
-              <td>Uptime SLA</td>
-              <td><span class="x-icon">✕</span></td>
-              <td class="featured-col"><span class="x-icon">✕</span></td>
-              <td class="val">99.9%</td>
-            </tr>
-          </tbody>
-        </table>
+  <!-- FAQ -->
+  <section class="pricing-faq">
+    <div class="pricing-faq-content">
+      <h2>Questions about pricing</h2>
+      
+      <div class="faq-item">
+        <div class="faq-q">What does the success fee cover?</div>
+        <p class="faq-a">The success fee applies only to payments we directly recover — payments that failed and were subsequently captured through Retriev's retry or email flow. We track this precisely via Stripe webhooks.</p>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-q">Is there a free trial?</div>
+        <p class="faq-a">Yes. All plans include a 14-day free trial. No credit card required to start. You only pay when you decide to continue.</p>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-q">Can I switch plans later?</div>
+        <p class="faq-a">Yes. You can upgrade or downgrade at any time. Changes take effect at the start of your next billing cycle.</p>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-q">What if I recover more than my plan covers?</div>
+        <p class="faq-a">We'll notify you when you approach your plan limit. You can upgrade to the next tier to keep the lower success fee rate.</p>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-q">Do you offer annual billing?</div>
+        <p class="faq-a">Yes. Annual billing gets a 20% discount on the flat monthly fee. Contact us to switch to annual.</p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- FAQ -->
-<section class="faq-section">
-  <div class="faq-inner">
-    <h2>Pricing FAQ</h2>
-    <div class="sub">Common questions about how pricing works</div>
-
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">How does the success fee work? <span class="arrow">↓</span></div>
-      <div class="faq-a">The success fee applies only to payments we directly recover — defined as a payment that failed and was subsequently captured within our recovery window. We track this precisely through Stripe webhooks and show you a full breakdown in your dashboard each month.</div>
+  <!-- Footer -->
+  <footer style="padding: 48px 24px; border-top: 1px solid var(--border);">
+    <div style="max-width: 1120px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px;">
+      <div style="display: flex; gap: 24px;">
+        <a href="/about.html" style="color: var(--text-3); font-size: 0.875rem; text-decoration: none;">About</a>
+        <a href="/blog.html" style="color: var(--text-3); font-size: 0.875rem; text-decoration: none;">Blog</a>
+        <a href="/docs.html" style="color: var(--text-3); font-size: 0.875rem; text-decoration: none;">Docs</a>
+      </div>
+      <div style="color: var(--text-3); font-size: 0.875rem;">Retriev</div>
     </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">Is there a free trial? <span class="arrow">↓</span></div>
-      <div class="faq-a">Yes — all plans include a 14-day free trial. No credit card required to start. You'll only be billed after the trial period ends, and we'll remind you 3 days before.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">What happens if I exceed my MRR limit? <span class="arrow">↓</span></div>
-      <div class="faq-a">We'll notify you when you're approaching your MRR cap and help you upgrade. We won't suddenly cut off your recovery sequences — you'll have a 7-day grace period to upgrade before any impact.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">Can I cancel anytime? <span class="arrow">↓</span></div>
-      <div class="faq-a">Absolutely. Cancel anytime with no questions asked. You'll retain access until the end of your billing period. We don't do lock-in contracts on monthly plans. Annual plans are non-refundable after 30 days.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">Do you offer discounts for startups? <span class="arrow">↓</span></div>
-      <div class="faq-a">Yes — we offer 50% off for the first 6 months for YC, Techstars, and other recognised accelerator alumni. Email us with proof of acceptance and we'll apply the discount manually.</div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="footer-inner">
-    <div class="footer-logo">Retriev</div>
-    <div class="footer-links">
-      <a href="index.html">Home</a>
-      <a href="index.html#features">Features</a>
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
-    </div>
-    <div class="footer-copy">© 2025 Retriev. All rights reserved.</div>
-  </div>
-</footer>
-
-<script>
-let annual = false;
-const prices = { starter: [29, 23], growth: [99, 79], scale: [299, 239] };
-
-function toggleBilling() {
-  annual = !annual;
-  document.getElementById('billingToggle').classList.toggle('on', annual);
-  const vals = document.querySelectorAll('.price-val');
-  const plans = ['starter', 'growth', 'scale'];
-  vals.forEach((el, i) => { el.textContent = prices[plans[i]][annual ? 1 : 0]; });
-}
-
-function toggleFaq(el) {
-  el.classList.toggle('open');
-}
-</script>
+  </footer>
 </body>
 </html>
