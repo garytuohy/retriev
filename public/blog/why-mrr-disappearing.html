@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why 10-15% of Your MRR Is Disappearing to Failed Payments — Retriev</title>
+  <meta name="description" content="Most SaaS founders don't realize how much revenue they're losing to failed payments. Here's what the data shows.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #030305;
+      --bg-elevated: #0a0a0f;
+      --text: #ffffff;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --indigo: #6366f1;
+      --indigo-light: #818cf8;
+      --violet: #8b5cf6;
+      --emerald: #10b981;
+      --border: rgba(255,255,255,0.06);
+    }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(3, 3, 5, 0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--text);
+    }
+    .nav-logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--indigo), var(--violet));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-logo-icon svg { width: 18px; height: 18px; color: white; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--indigo), var(--violet));
+      color: white;
+    }
+    
+    article {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 120px 24px 80px;
+    }
+    
+    .article-header {
+      margin-bottom: 48px;
+    }
+    .article-tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--emerald);
+      background: rgba(16, 185, 129, 0.1);
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+    }
+    .article-header h1 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .article-meta {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    
+    .article-content {
+      color: var(--text-secondary);
+      font-size: 1.0625rem;
+      line-height: 1.8;
+    }
+    .article-content h2 {
+      color: var(--text);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 48px 0 16px;
+    }
+    .article-content h3 {
+      color: var(--text);
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 32px 0 12px;
+    }
+    .article-content p {
+      margin-bottom: 24px;
+    }
+    .article-content ul, .article-content ol {
+      margin: 0 0 24px 24px;
+    }
+    .article-content li {
+      margin-bottom: 12px;
+    }
+    .article-content blockquote {
+      border-left: 3px solid var(--indigo);
+      padding-left: 20px;
+      margin: 32px 0;
+      font-style: italic;
+      color: var(--text);
+    }
+    .article-content code {
+      background: var(--bg-elevated);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    .article-content pre {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      overflow-x: auto;
+      margin: 24px 0;
+    }
+    .article-content pre code {
+      background: none;
+      padding: 0;
+    }
+    
+    .stat-highlight {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 32px 0;
+      text-align: center;
+    }
+    .stat-highlight-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--text), var(--indigo-light));
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .stat-highlight-label {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 8px;
+    }
+    
+    .article-cta {
+      margin-top: 64px;
+      padding: 32px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      text-align: center;
+    }
+    .article-cta h3 {
+      color: var(--text);
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+    }
+    .article-cta p {
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      Retriev
+    </a>
+    <div style="display: flex; gap: 12px;">
+      <a href="/login.html" class="btn" style="color: var(--text-secondary);">Log in</a>
+      <a href="/signup.html" class="btn btn-primary">Start free trial</a>
+    </div>
+  </nav>
+
+  <article>
+    <header class="article-header">
+      <span class="article-tag">Featured</span>
+      <h1>Why 10-15% of Your MRR Is Disappearing to Failed Payments</h1>
+      <p class="article-meta">March 15, 2026 · 5 min read</p>
+    </header>
+
+    <div class="article-content">
+      <p>Most SaaS founders track churn carefully. They know their monthly churn rate, they've calculated customer lifetime value, and they've built retention strategies. But there's a silent killer that most dashboards don't show: failed payments.</p>
+
+      <div class="stat-highlight">
+        <div class="stat-highlight-value">10-15%</div>
+        <div class="stat-highlight-label">Of SaaS MRR is lost monthly to failed payments</div>
+      </div>
+
+      <h2>The invisible churn problem</h2>
+      
+      <p>When a customer cancels, you see it. It shows up in your churn metrics, triggers your win-back campaigns, and appears in your retention reports. But when a payment fails and the customer never updates their card? They often just... disappear.</p>
+      
+      <p>This is <strong>involuntary churn</strong>, and it's fundamentally different from the churn you're used to tracking.</p>
+
+      <h3>Why payments fail</h3>
+      
+      <p>Payment failures happen for dozens of reasons, but they cluster into a few categories:</p>
+      
+      <ul>
+        <li><strong>Card expired</strong> — The customer's card reached its expiration date</li>
+        <li><strong>Insufficient funds</strong> — Temporary cash flow issues</li>
+        <li><strong>Bank declined</strong> — Fraud protection triggers or account holds</li>
+        <li><strong>Card canceled</strong> — Customer got a new card and forgot to update</li>
+      </ul>
+
+      <p>Most payment processors handle this with simple retry logic: try again in 3 days, then 7 days, then give up. But this one-size-fits-all approach ignores crucial context.</p>
+
+      <h2>The math is staggering</h2>
+
+      <p>Let's say you're running a SaaS with $100K MRR. Industry data shows 10-15% of payments fail each month. That's $10-15K vanishing from your revenue — every single month.</p>
+
+      <div class="stat-highlight">
+        <div class="stat-highlight-value">$46B</div>
+        <div class="stat-highlight-label">Lost annually across the SaaS industry</div>
+      </div>
+
+      <p>But here's the thing: <strong>50% of failed payments are recoverable</strong> with the right approach.</p>
+
+      <h2>Why traditional recovery fails</h2>
+
+      <h3>Blind retry timing</h3>
+      <p>Payment processors retry at fixed intervals with zero intelligence. They don't know that this customer always gets paid on the 15th, or that they're more likely to have funds on Tuesday morning.</p>
+
+      <h3>No visibility</h3>
+      <p>Your customer probably doesn't even know their payment failed. They think everything is fine until suddenly their subscription is cancelled.</p>
+
+      <h3>Generic outreach</h3>
+      <p>If you send recovery emails at all, they're probably templates sent to everyone. No personalization, no context about why this particular customer's payment failed.</p>
+
+      <h2>What AI-powered recovery looks like</h2>
+
+      <p>Modern payment recovery uses machine learning to change the game:</p>
+
+      <ol>
+        <li><strong>Smart retry timing</strong> — AI analyzes payment patterns to identify when each customer is most likely to have funds available</li>
+        <li><strong>Personalized emails</strong> — LLM-generated messages that feel human and address the specific failure reason</li>
+        <li><strong>Churn prediction</strong> — Identify at-risk customers before they fail, enabling proactive outreach</li>
+        <li><strong>Multi-channel recovery</strong> — Email, SMS, and in-app notifications coordinated for maximum impact</li>
+      </ol>
+
+      <blockquote>
+        "We went from 67% recovery rate to 94% in 6 weeks. The AI timing is genuinely better than anything we could do manually." — Marcus Webb, CEO at Flowstate
+      </blockquote>
+
+      <h2>The ROI is clear</h2>
+
+      <p>Companies using AI-powered recovery typically see:</p>
+
+      <ul>
+        <li>60-75% recovery rate within 30 days</li>
+        <li>Average of $2,800/month in recovered revenue</li>
+        <li>First recovery within 48 hours of activation</li>
+      </ul>
+
+      <p>For a product like Retriev with pricing starting at $29/month, the math is compelling: recover just a few hundred dollars and you're profitable. Recover thousands, and it becomes one of your highest-ROI investments.</p>
+
+      <h2>What to do next</h2>
+
+      <p>If you're running a SaaS, here's your action plan:</p>
+
+      <ol>
+        <li><strong>Measure your failed payment rate</strong> — Pull data from Stripe and calculate what percentage of payments fail monthly</li>
+        <li><strong>Calculate the revenue impact</strong> — Multiply that rate by your MRR to see what you're losing</li>
+        <li><strong>Implement AI recovery</strong> — Tools like Retriev can have you recovering payments within 48 hours</li>
+      </ol>
+
+      <p>The silent revenue bleed stops when you start paying attention to it.</p>
+    </div>
+
+    <div class="article-cta">
+      <h3>Start recovering failed payments</h3>
+      <p>Connect Stripe in 2 minutes. See your first recovery within 48 hours.</p>
+      <a href="/signup.html" class="btn btn-primary">Start free trial</a>
+    </div>
+  </article>
+</body>
+</html>
