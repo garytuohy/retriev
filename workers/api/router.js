@@ -7,6 +7,7 @@ import { handleWebhook } from './webhook.js';
 import { handleAuth } from './auth.js';
 import { handleWaitlist } from './waitlist.js';
 import { handleStripe } from './stripe.js';
+import { handleAI } from './ai.js';
 import { processRetryQueue } from './dunning.js';
 
 export default {
@@ -31,6 +32,7 @@ export default {
     if (path.startsWith('/api/auth')) return handleAuth(request, env, path);
     if (path === '/api/waitlist') return handleWaitlist(request, env);
     if (path.startsWith('/api/stripe')) return handleStripe(request, env, path);
+    if (path.startsWith('/api/ai')) return handleAI(request, env, path);
 
     // Health check
     if (path === '/api/health') {
