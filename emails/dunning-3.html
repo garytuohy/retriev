@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Final attempt — action required</title>
+</head>
+<body style="margin:0;padding:0;background-color:#080a0f;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <div style="max-width:600px;margin:0 auto;padding:48px 24px;">
+
+    <!-- Logo -->
+    <div style="margin-bottom:40px;">
+      <span style="font-size:22px;font-weight:800;color:#6366f1;">Retriev</span>
+      <span style="font-size:14px;color:rgba(255,255,255,0.35);margin-left:12px;">on behalf of {{merchantName}}</span>
+    </div>
+
+    <!-- Card -->
+    <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:16px;overflow:hidden;">
+      <div style="height:4px;background:linear-gradient(90deg,#f43f5e,#fb923c);"></div>
+
+      <div style="padding:48px 40px;">
+        <div style="font-size:40px;margin-bottom:16px;">🚨</div>
+        <h1 style="font-size:26px;font-weight:800;color:#ffffff;margin:0 0 16px;letter-spacing:-0.8px;line-height:1.25;">
+          {{firstName}}, this is our final attempt
+        </h1>
+        <p style="font-size:16px;color:rgba(255,255,255,0.65);line-height:1.75;margin:0 0 16px;">
+          We've tried to collect <strong style="color:#ffffff;">{{amount}}</strong> three times over the past 7 days. This is our last automatic attempt.
+        </p>
+        <p style="font-size:16px;color:rgba(255,255,255,0.65);line-height:1.75;margin:0 0 32px;">
+          If your payment doesn't go through today, your {{merchantName}} subscription will be paused. We'd really hate to lose you.
+        </p>
+
+        <!-- Urgent callout -->
+        <div style="background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.25);border-radius:10px;padding:20px 24px;margin-bottom:32px;">
+          <p style="font-size:15px;color:rgba(255,255,255,0.8);margin:0 0 8px;font-weight:700;">
+            ⏰ Action required before {{deadline}}
+          </p>
+          <p style="font-size:14px;color:rgba(255,255,255,0.55);margin:0;line-height:1.6;">
+            Update your payment method to avoid losing access to your account and all your data.
+          </p>
+        </div>
+
+        <!-- CTA -->
+        <a href="{{updatePaymentUrl}}" style="display:inline-block;padding:16px 32px;background:linear-gradient(135deg,#f43f5e,#fb923c);color:#ffffff;text-decoration:none;border-radius:10px;font-weight:700;font-size:16px;">
+          Save My Account Now →
+        </a>
+
+        <p style="font-size:14px;color:rgba(255,255,255,0.4);margin:20px 0 0;line-height:1.6;">
+          After updating, your subscription will resume immediately with no interruption. Your data is safe.
+        </p>
+      </div>
+
+      <!-- What's at stake -->
+      <div style="background:rgba(244,63,94,0.04);border-top:1px solid rgba(244,63,94,0.1);padding:28px 40px;">
+        <p style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1.5px;margin:0 0 16px;">If your account is paused</p>
+        <table style="width:100%;">
+          <tr>
+            <td style="padding:7px 0;vertical-align:top;width:20px;font-size:14px;">✕</td>
+            <td style="padding:7px 0;font-size:14px;color:rgba(255,255,255,0.5);padding-left:8px;">Access to {{merchantName}} paused immediately</td>
+          </tr>
+          <tr>
+            <td style="padding:7px 0;vertical-align:top;font-size:14px;">✕</td>
+            <td style="padding:7px 0;font-size:14px;color:rgba(255,255,255,0.5);padding-left:8px;">All your settings and data preserved for 30 days</td>
+          </tr>
+          <tr>
+            <td style="padding:7px 0;vertical-align:top;font-size:14px;color:#10b981;">✓</td>
+            <td style="padding:7px 0;font-size:14px;color:rgba(255,255,255,0.5);padding-left:8px;">Reactivate anytime by updating payment — no data loss</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Personal note -->
+      <div style="background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.05);padding:28px 40px;">
+        <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.75;margin:0;font-style:italic;">
+          "If you're going through something difficult right now, reach out — we're happy to work something out. Reply to this email or email us at <a href="mailto:hello@retriev.pages.dev" style="color:#a5b4fc;">hello@retriev.pages.dev</a>."
+        </p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.3);margin:12px 0 0;">— The {{merchantName}} team</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="margin-top:32px;text-align:center;">
+      <p style="font-size:12px;color:rgba(255,255,255,0.2);margin:0;">
+        Sent by Retriev on behalf of {{merchantName}} · 
+        <a href="{{unsubscribeUrl}}" style="color:rgba(255,255,255,0.3);">Unsubscribe from payment reminders</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

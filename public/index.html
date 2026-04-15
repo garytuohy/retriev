@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retriev — AI-Powered Failed Payment Recovery</title>
+  <meta name="description" content="Stop losing revenue to failed payments. Retriev uses AI to automatically recover failed payments, reduce churn, and save your SaaS business.">
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=inter:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080a0f;
+      --bg2: #0d1117;
+      --primary: #6366f1;
+      --accent: #8b5cf6;
+      --text: #ffffff;
+      --text-muted: rgba(255,255,255,0.55);
+      --card-bg: rgba(255,255,255,0.04);
+      --card-border: rgba(255,255,255,0.08);
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+      background: rgba(8,10,15,0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .nav-logo {
+      font-size: 22px; font-weight: 800;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 36px; }
+    .nav-links a {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 15px; font-weight: 500; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--primary); color: #fff !important;
+      padding: 10px 22px; border-radius: var(--radius-sm);
+      font-weight: 600; font-size: 14px !important;
+      transition: opacity .2s, transform .2s !important;
+    }
+    .nav-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,102,241,0.25) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 50%, rgba(139,92,246,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 20% 60%, rgba(99,102,241,0.08) 0%, transparent 60%);
+      animation: pulse-bg 8s ease-in-out infinite alternate;
+    }
+    @keyframes pulse-bg {
+      from { opacity: 0.8; }
+      to { opacity: 1; }
+    }
+
+    .hero-grid {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 80%);
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 820px; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.3);
+      padding: 8px 18px; border-radius: 100px;
+      font-size: 13px; font-weight: 600; color: #a5b4fc;
+      margin-bottom: 28px;
+    }
+    .hero-badge .dot { width: 6px; height: 6px; background: #6366f1; border-radius: 50%; animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .hero h1 {
+      font-size: clamp(42px, 7vw, 78px);
+      font-weight: 900; line-height: 1.08; letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 40%, #a78bfa 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub {
+      font-size: clamp(17px, 2.2vw, 21px); color: var(--text-muted);
+      max-width: 580px; margin: 0 auto 44px; line-height: 1.7;
+    }
+
+    .hero-form {
+      display: flex; gap: 12px; max-width: 480px; margin: 0 auto;
+    }
+    .hero-form input {
+      flex: 1; padding: 14px 20px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-sm); color: var(--text); font-size: 15px;
+      font-family: inherit; outline: none; transition: border-color .2s;
+    }
+    .hero-form input::placeholder { color: var(--text-muted); }
+    .hero-form input:focus { border-color: var(--primary); }
+    .btn-primary {
+      padding: 14px 28px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff; border: none; border-radius: var(--radius-sm);
+      font-size: 15px; font-weight: 700; cursor: pointer;
+      transition: transform .2s, opacity .2s; white-space: nowrap;
+      font-family: inherit;
+    }
+    .btn-primary:hover { transform: translateY(-2px); opacity: 0.9; }
+
+    .hero-note {
+      margin-top: 18px; color: var(--text-muted); font-size: 13px;
+    }
+
+    .hero-stats {
+      display: flex; justify-content: center; gap: 48px;
+      margin-top: 72px; padding-top: 48px;
+      border-top: 1px solid var(--card-border);
+    }
+    .stat-item { text-align: center; }
+    .stat-value { font-size: 32px; font-weight: 800; background: linear-gradient(135deg, #6366f1, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+    /* ── SECTIONS ── */
+    section { padding: 100px 24px; }
+    .container { max-width: 1140px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 12px; font-weight: 700; letter-spacing: 2px;
+      color: var(--primary); text-transform: uppercase; margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: clamp(32px, 4vw, 48px); font-weight: 800;
+      letter-spacing: -1.5px; line-height: 1.15; margin-bottom: 18px;
+    }
+    .section-sub {
+      font-size: 17px; color: var(--text-muted); max-width: 560px; line-height: 1.7;
+    }
+
+    /* ── PROBLEM ── */
+    .problem { background: var(--bg2); }
+    .problem-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+      margin-top: 64px;
+    }
+    .problem-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .problem-stat {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: var(--radius); padding: 28px;
+    }
+    .problem-stat .num {
+      font-size: 42px; font-weight: 900;
+      background: linear-gradient(135deg, #f43f5e, #fb923c);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .problem-stat.good .num {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .problem-stat p { color: var(--text-muted); font-size: 14px; margin-top: 8px; line-height: 1.5; }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 64px;
+    }
+    .step {
+      text-align: center; padding: 40px 28px;
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: var(--radius); position: relative; overflow: hidden;
+      transition: border-color .3s, transform .3s;
+    }
+    .step:hover { border-color: rgba(99,102,241,0.4); transform: translateY(-4px); }
+    .step::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+    .step-num {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 800; margin: 0 auto 24px;
+    }
+    .step h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+    .step p { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+    .step-icon { font-size: 36px; margin-bottom: 20px; }
+
+    /* ── FEATURES ── */
+    .features-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 64px;
+    }
+    .feature-card {
+      padding: 36px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(10px);
+      transition: border-color .3s, transform .3s, background .3s;
+      position: relative; overflow: hidden;
+    }
+    .feature-card:hover {
+      border-color: rgba(99,102,241,0.35);
+      background: rgba(99,102,241,0.06);
+      transform: translateY(-3px);
+    }
+    .feature-card .icon {
+      width: 52px; height: 52px; border-radius: 12px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+      border: 1px solid rgba(99,102,241,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 20px;
+    }
+    .feature-card h3 { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+    .feature-card p { color: var(--text-muted); font-size: 15px; line-height: 1.65; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { background: var(--bg2); }
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 64px;
+    }
+    .testimonial-card {
+      padding: 32px;
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+    }
+    .testimonial-stars { color: #fbbf24; font-size: 16px; margin-bottom: 18px; }
+    .testimonial-text {
+      font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.85);
+      margin-bottom: 24px; font-style: italic;
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 14px; }
+    .testimonial-avatar { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--card-border); }
+    .testimonial-name { font-weight: 700; font-size: 15px; }
+    .testimonial-role { font-size: 13px; color: var(--text-muted); }
+
+    /* ── PRICING ── */
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 64px;
+    }
+    .pricing-card {
+      padding: 40px 32px;
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: var(--radius); position: relative; overflow: hidden;
+      transition: transform .3s;
+    }
+    .pricing-card:hover { transform: translateY(-4px); }
+    .pricing-card.featured {
+      background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.08));
+      border-color: rgba(99,102,241,0.4);
+    }
+    .pricing-card.featured::before {
+      content: 'Most Popular';
+      position: absolute; top: 20px; right: 20px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff; font-size: 11px; font-weight: 700;
+      padding: 4px 12px; border-radius: 100px; letter-spacing: 0.5px;
+    }
+    .pricing-name { font-size: 15px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px; }
+    .pricing-price {
+      font-size: 52px; font-weight: 900; line-height: 1;
+      margin-bottom: 6px; letter-spacing: -2px;
+    }
+    .pricing-price sup { font-size: 24px; font-weight: 700; letter-spacing: 0; }
+    .pricing-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 8px; }
+    .pricing-commission {
+      display: inline-block;
+      background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.25);
+      color: #a5b4fc; font-size: 13px; font-weight: 600;
+      padding: 4px 12px; border-radius: 100px; margin-bottom: 32px;
+    }
+    .pricing-features { list-style: none; margin-bottom: 36px; }
+    .pricing-features li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: var(--text-muted); padding: 8px 0;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .pricing-features li:last-child { border-bottom: none; }
+    .pricing-features li::before { content: '✓'; color: var(--primary); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .btn-outline {
+      display: block; width: 100%; padding: 14px;
+      border: 1px solid rgba(255,255,255,0.15); background: transparent;
+      color: var(--text); border-radius: var(--radius-sm);
+      font-size: 15px; font-weight: 600; cursor: pointer;
+      transition: all .2s; font-family: inherit; text-decoration: none; text-align: center;
+    }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-filled {
+      display: block; width: 100%; padding: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff; border: none; border-radius: var(--radius-sm);
+      font-size: 15px; font-weight: 600; cursor: pointer;
+      transition: opacity .2s, transform .2s; font-family: inherit; text-decoration: none; text-align: center;
+    }
+    .btn-filled:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* ── FAQ ── */
+    .faq { background: var(--bg2); }
+    .faq-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 64px;
+    }
+    .faq-item {
+      padding: 28px 32px;
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+    }
+    .faq-q { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+    .faq-a { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+
+    /* ── CTA BAND ── */
+    .cta-band {
+      text-align: center; padding: 120px 24px;
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(99,102,241,0.15) 0%, transparent 70%);
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+    }
+    .cta-band h2 { font-size: clamp(32px, 5vw, 54px); font-weight: 900; letter-spacing: -1.5px; margin-bottom: 18px; }
+    .cta-band p { font-size: 18px; color: var(--text-muted); margin-bottom: 40px; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 60px 24px;
+      border-top: 1px solid var(--card-border);
+    }
+    .footer-inner {
+      max-width: 1140px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-logo { font-size: 20px; font-weight: 800; background: linear-gradient(135deg, #6366f1, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .footer-links { display: flex; gap: 32px; }
+    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color .2s; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { color: var(--text-muted); font-size: 13px; }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed; bottom: 32px; right: 32px; z-index: 9999;
+      background: #1a1a2e; border: 1px solid var(--primary);
+      color: var(--text); padding: 16px 24px; border-radius: var(--radius-sm);
+      font-size: 15px; font-weight: 500; transform: translateY(20px);
+      opacity: 0; transition: all .3s; pointer-events: none;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .hero-form { flex-direction: column; }
+      .hero-stats { gap: 28px; flex-wrap: wrap; }
+      .problem-grid { grid-template-columns: 1fr; gap: 40px; }
+      .steps { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .faq-grid { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; gap: 24px; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">Retriev</a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#how-it-works">How it Works</a>
+    <a href="#early-access" class="nav-cta">Get Early Access</a>
+  </div>
+  <div class="nav-hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="early-access">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Now in Early Access — Join 400+ SaaS founders
+    </div>
+    <h1>Stop Losing Revenue to<br><span class="gradient-text">Failed Payments</span></h1>
+    <p class="hero-sub">Retriev uses AI to automatically detect, recover, and prevent failed payments — without lifting a finger. Average customer recovers $2,800/month within 30 days.</p>
+    <form class="hero-form" onsubmit="joinWaitlist(event)">
+      <input type="email" placeholder="Enter your work email" required id="hero-email">
+      <button type="submit" class="btn-primary">Get Early Access →</button>
+    </form>
+    <p class="hero-note">No credit card required · Setup in 5 minutes · Cancel anytime</p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-value">$2.8M+</div>
+        <div class="stat-label">Revenue recovered</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">73%</div>
+        <div class="stat-label">Avg. recovery rate</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">400+</div>
+        <div class="stat-label">SaaS businesses</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">5 min</div>
+        <div class="stat-label">To connect Stripe</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="container">
+    <div class="section-label">The Problem</div>
+    <div class="section-title">You're leaving money on the table. Every. Single. Month.</div>
+    <p class="section-sub">Failed payments silently drain your revenue. Most SaaS founders don't realise how much they're losing until it's too late.</p>
+    <div class="problem-grid">
+      <div>
+        <p style="font-size:17px; color:var(--text-muted); line-height:1.8; margin-bottom: 24px;">Credit cards expire. Bank accounts run dry. One-time issues block recurring charges. Your payment processor retries blindly — and customers churn before they even know there was a problem.</p>
+        <p style="font-size:17px; color:var(--text-muted); line-height:1.8;">Retriev changes everything. Our AI learns the perfect retry window for each customer, crafts personalised recovery emails, and recovers revenue you thought was lost — automatically.</p>
+      </div>
+      <div class="problem-stats">
+        <div class="problem-stat">
+          <div class="num">9%</div>
+          <p>Of SaaS revenue is lost to failed payments each year</p>
+        </div>
+        <div class="problem-stat">
+          <div class="num">$46B</div>
+          <p>Lost annually to involuntary churn across all SaaS businesses</p>
+        </div>
+        <div class="problem-stat good">
+          <div class="num">50%</div>
+          <p>Of failed payments are recoverable with the right approach</p>
+        </div>
+        <div class="problem-stat good">
+          <div class="num">73%</div>
+          <p>Average recovery rate for Retriev customers after 30 days</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="container" style="text-align:center">
+    <div class="section-label">How It Works</div>
+    <div class="section-title">Up and running in 3 steps</div>
+    <p class="section-sub" style="margin:0 auto">Connect once. Let AI do the rest. Start recovering revenue this week.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-icon">🔌</div>
+        <div class="step-num">1</div>
+        <h3>Connect Stripe</h3>
+        <p>Link your Stripe account with one click. No code required. Retriev instantly starts monitoring your payment events in real-time.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">🧠</div>
+        <div class="step-num">2</div>
+        <h3>AI Monitors</h3>
+        <p>Our AI analyses each failed payment, predicts the best recovery window, and segments customers by risk level and payment history.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">💰</div>
+        <div class="step-num">3</div>
+        <h3>Automatically Recovers</h3>
+        <p>Smart retries, personalised emails, and dunning sequences run automatically. Watch recovered revenue land in your dashboard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" style="background: var(--bg2)">
+  <div class="container">
+    <div class="section-label">AI Features</div>
+    <div class="section-title">Built on machine learning.<br>Powered by your data.</div>
+    <p class="section-sub">Every feature is designed to maximise recovery rates without annoying your customers.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="icon">⏰</div>
+        <h3>Smart Retry Timing</h3>
+        <p>Our AI analyses historical payment patterns to identify the optimal retry window for each customer. No more blind retries at midnight. We know when their paycheck hits.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">✉️</div>
+        <h3>Personalised Recovery Emails</h3>
+        <p>GPT-powered dunning emails that adapt tone, timing, and urgency based on customer behaviour, subscription value, and payment history. Not templates — real personalisation.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🔮</div>
+        <h3>Churn Prediction</h3>
+        <p>Identify at-risk subscribers before they cancel. Our model flags customers showing payment distress signals so your team can reach out proactively and save the relationship.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📊</div>
+        <h3>Real-time Analytics</h3>
+        <p>Track recovery rates, revenue saved, email performance, and retry success across all customer segments. Know exactly what's working and double down on it.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🔗</div>
+        <h3>Stripe-Native Integration</h3>
+        <p>Works directly with your existing Stripe setup. No data migration. No code changes. Connect in under 5 minutes and start recovering payments today.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🛡️</div>
+        <h3>Compliance Built-in</h3>
+        <p>GDPR, CAN-SPAM, and PCI compliant out of the box. All emails include proper unsubscribe links. Your customers are protected and so are you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="container" style="text-align:center">
+    <div class="section-label">Testimonials</div>
+    <div class="section-title">Founders who stopped the bleed</div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"We were losing around $3,200/month to failed payments and not even tracking it properly. Retriev recovered $2,900 in our first month. The smart retry timing is genuinely impressive — it knew when to hit cards better than we did manually."</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar" src="https://ui-avatars.com/api/?name=Marcus+Chen&background=6366f1&color=fff&size=88" alt="Marcus Chen">
+          <div>
+            <div class="testimonial-name">Marcus Chen</div>
+            <div class="testimonial-role">Founder, Flowdesk · $1.2M ARR</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"I've tried three dunning tools before Retriev. None of them used actual AI — just scheduled email blasts. Retriev's personalised emails are a completely different league. Our recovery rate went from 31% to 68% in 6 weeks."</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar" src="https://ui-avatars.com/api/?name=Sophie+Anand&background=8b5cf6&color=fff&size=88" alt="Sophie Anand">
+          <div>
+            <div class="testimonial-name">Sophie Anand</div>
+            <div class="testimonial-role">CEO, Lumentask · $480K ARR</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"The churn prediction feature alone is worth the subscription. We caught 14 at-risk customers last month before they cancelled, reached out, and saved 11 of them. That's $22K ARR preserved. ROI is insane."</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar" src="https://ui-avatars.com/api/?name=James+Okafor&background=4f46e5&color=fff&size=88" alt="James Okafor">
+          <div>
+            <div class="testimonial-name">James Okafor</div>
+            <div class="testimonial-role">Co-founder, Stackbeam · $2.1M ARR</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container" style="text-align:center">
+    <div class="section-label">Pricing</div>
+    <div class="section-title">Pay for what you recover</div>
+    <p class="section-sub" style="margin: 0 auto 0">Simple, transparent pricing. A small flat fee plus a success fee on recovered revenue — we only win when you win.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-name">Starter</div>
+        <div class="pricing-price"><sup>$</sup>29</div>
+        <div class="pricing-sub">per month</div>
+        <div class="pricing-commission">+ 8% of recovered revenue</div>
+        <ul class="pricing-features">
+          <li>Up to $5K MRR</li>
+          <li>Smart retry timing</li>
+          <li>3-email dunning sequences</li>
+          <li>Basic analytics dashboard</li>
+          <li>Stripe integration</li>
+          <li>Email support</li>
+        </ul>
+        <a href="signup.html" class="btn-outline">Get Started</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="pricing-name">Growth</div>
+        <div class="pricing-price"><sup>$</sup>99</div>
+        <div class="pricing-sub">per month</div>
+        <div class="pricing-commission">+ 5% of recovered revenue</div>
+        <ul class="pricing-features">
+          <li>Up to $50K MRR</li>
+          <li>AI-personalised emails</li>
+          <li>6-email dunning sequences</li>
+          <li>Churn prediction alerts</li>
+          <li>Advanced analytics</li>
+          <li>Slack integration</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="signup.html" class="btn-filled">Get Started</a>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-name">Scale</div>
+        <div class="pricing-price"><sup>$</sup>299</div>
+        <div class="pricing-sub">per month</div>
+        <div class="pricing-commission">+ 3% of recovered revenue</div>
+        <ul class="pricing-features">
+          <li>Unlimited MRR</li>
+          <li>Custom AI sequences</li>
+          <li>Unlimited dunning emails</li>
+          <li>Churn prediction + scoring</li>
+          <li>Full analytics API access</li>
+          <li>Custom integrations</li>
+          <li>Dedicated account manager</li>
+          <li>SLA guarantee</li>
+        </ul>
+        <a href="signup.html" class="btn-outline">Get Started</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:0">
+      <div class="section-label">FAQ</div>
+      <div class="section-title">Questions answered</div>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-q">How does Retriev connect to Stripe?</div>
+        <div class="faq-a">You connect via Stripe OAuth — one click, read-write access to payment events. We never store your Stripe secret key. The entire setup takes under 5 minutes and requires no code changes.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What's the success fee based on?</div>
+        <div class="faq-a">The success fee applies only to payments we directly recover — i.e., a payment that failed and was subsequently captured through Retriev's retry or email flow. We track this precisely via Stripe webhooks.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Will recovery emails annoy my customers?</div>
+        <div class="faq-a">No — our AI is calibrated to be helpful, not spammy. Emails are timed thoughtfully, personalised to each customer, and capped at sensible frequency limits. Customers respond well because the emails feel human.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How quickly will I see recovered revenue?</div>
+        <div class="faq-a">Most customers see their first recovery within 48 hours of connecting. Average recovery rates reach 60–75% within 30 days as the AI calibrates to your customer base.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is Retriev GDPR compliant?</div>
+        <div class="faq-a">Yes. All emails include proper unsubscribe mechanisms. Customer data is processed under a DPA. We're hosted on Cloudflare infrastructure with EU data residency options available on Scale plan.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I customise the email templates?</div>
+        <div class="faq-a">On Growth and Scale plans, you can customise brand voice, colours, and tone. The AI still personalises content per customer — you just control the guardrails and brand identity.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band">
+  <div class="container">
+    <h2>Start recovering revenue<br>this week</h2>
+    <p>Join 400+ SaaS founders who stopped the bleed. Setup takes 5 minutes.</p>
+    <form class="hero-form" style="margin: 0 auto" onsubmit="joinWaitlist(event)">
+      <input type="email" placeholder="Enter your work email" required id="cta-email">
+      <button type="submit" class="btn-primary">Get Early Access →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Retriev</div>
+    <div class="footer-links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="login.html">Login</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+    <div class="footer-copy">© 2025 Retriev. All rights reserved.</div>
+  </div>
+</footer>
+
+<div id="toast">🎉 You're on the list! We'll be in touch soon.</div>
+
+<script>
+  function toggleMenu() {
+    const links = document.querySelector('.nav-links');
+    links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+    links.style.flexDirection = 'column';
+    links.style.position = 'absolute';
+    links.style.top = '70px';
+    links.style.left = '0';
+    links.style.right = '0';
+    links.style.background = 'rgba(8,10,15,0.98)';
+    links.style.padding = '24px';
+    links.style.gap = '24px';
+    links.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
+  }
+
+  async function joinWaitlist(e) {
+    e.preventDefault();
+    const email = e.target.querySelector('input[type=email]').value;
+    try {
+      await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+    } catch(_) {}
+    showToast();
+    e.target.reset();
+  }
+
+  function showToast() {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 4000);
+  }
+
+  // Intersection observer for fade-in animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.feature-card, .step, .pricing-card, .testimonial-card, .faq-item, .problem-stat').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, border-color 0.3s';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>

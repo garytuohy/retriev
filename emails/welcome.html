@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Retriev</title>
+</head>
+<body style="margin:0;padding:0;background-color:#080a0f;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <div style="max-width:600px;margin:0 auto;padding:48px 24px;">
+
+    <!-- Logo -->
+    <div style="margin-bottom:40px;">
+      <span style="font-size:26px;font-weight:800;color:#6366f1;">Retriev</span>
+    </div>
+
+    <!-- Card -->
+    <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:16px;overflow:hidden;">
+
+      <!-- Header gradient bar -->
+      <div style="height:4px;background:linear-gradient(90deg,#6366f1,#8b5cf6,#a78bfa);"></div>
+
+      <div style="padding:48px 40px;">
+        <div style="font-size:48px;margin-bottom:16px;">🎉</div>
+        <h1 style="font-size:30px;font-weight:800;color:#ffffff;margin:0 0 16px;letter-spacing:-1px;line-height:1.2;">
+          Welcome to Retriev, {{firstName}}!
+        </h1>
+        <p style="font-size:16px;color:rgba(255,255,255,0.65);line-height:1.75;margin:0 0 24px;">
+          Your account is live. You're now on the path to recovering revenue you thought was gone forever.
+        </p>
+        <p style="font-size:16px;color:rgba(255,255,255,0.65);line-height:1.75;margin:0 0 36px;">
+          Connect your Stripe account to get started — it takes under 5 minutes and requires no code changes.
+        </p>
+
+        <!-- CTA Button -->
+        <a href="https://retriev.pages.dev/dashboard" style="display:inline-block;padding:16px 32px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#ffffff;text-decoration:none;border-radius:10px;font-weight:700;font-size:16px;letter-spacing:-0.2px;">
+          Connect Stripe & Start Recovering →
+        </a>
+      </div>
+
+      <!-- Stats section -->
+      <div style="background:rgba(99,102,241,0.06);border-top:1px solid rgba(255,255,255,0.06);padding:32px 40px;">
+        <p style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1.5px;margin:0 0 20px;">
+          What to expect in your first 30 days
+        </p>
+        <table style="width:100%;border-collapse:collapse;">
+          <tr>
+            <td style="padding:10px 0;vertical-align:top;width:40px;">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.25);display:flex;align-items:center;justify-content:center;font-size:13px;text-align:center;line-height:28px;">1</div>
+            </td>
+            <td style="padding:10px 0 10px 12px;">
+              <strong style="color:#ffffff;font-size:14px;">Day 1:</strong>
+              <span style="color:rgba(255,255,255,0.55);font-size:14px;"> AI calibrates to your customer payment patterns</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:10px 0;vertical-align:top;">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.25);font-size:13px;text-align:center;line-height:28px;">7</div>
+            </td>
+            <td style="padding:10px 0 10px 12px;">
+              <strong style="color:#ffffff;font-size:14px;">Week 1:</strong>
+              <span style="color:rgba(255,255,255,0.55);font-size:14px;"> First recovered payments land in your dashboard</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:10px 0;vertical-align:top;">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.25);font-size:13px;text-align:center;line-height:28px;">30</div>
+            </td>
+            <td style="padding:10px 0 10px 12px;">
+              <strong style="color:#ffffff;font-size:14px;">Day 30:</strong>
+              <span style="color:rgba(255,255,255,0.55);font-size:14px;"> Average recovery rate hits 73% and climbs</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="margin-top:32px;text-align:center;">
+      <p style="font-size:13px;color:rgba(255,255,255,0.25);margin:0 0 8px;">
+        Questions? Reply to this email — we read everything.
+      </p>
+      <p style="font-size:12px;color:rgba(255,255,255,0.2);margin:0;">
+        Retriev · <a href="https://retriev.pages.dev" style="color:rgba(255,255,255,0.3);">retriev.pages.dev</a> · 
+        <a href="{{unsubscribeUrl}}" style="color:rgba(255,255,255,0.3);">Unsubscribe</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

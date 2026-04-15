@@ -1,0 +1,23 @@
+# Wrangler
+.wrangler/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Env files
+.env
+.env.local
+.env.*.local
+.dev.vars
+
+# Node
+node_modules/
+
+# Logs
+*.log

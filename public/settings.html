@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — Retriev</title>
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=inter:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #080a0f;
+      --bg2: #0d1117;
+      --sidebar: #0a0c13;
+      --primary: #6366f1;
+      --accent: #8b5cf6;
+      --text: #ffffff;
+      --text-muted: rgba(255,255,255,0.5);
+      --card-bg: rgba(255,255,255,0.04);
+      --card-border: rgba(255,255,255,0.08);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --green: #10b981;
+      --red: #f43f5e;
+      --yellow: #f59e0b;
+    }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      display: flex; min-height: 100vh; overflow-x: hidden;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 240px; min-height: 100vh;
+      background: var(--sidebar);
+      border-right: 1px solid var(--card-border);
+      display: flex; flex-direction: column;
+      position: fixed; top: 0; left: 0; bottom: 0;
+      z-index: 50;
+    }
+    .sidebar-logo {
+      padding: 28px 24px 24px;
+      font-size: 22px; font-weight: 800;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .sidebar-nav { padding: 16px 12px; flex: 1; }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 16px; border-radius: var(--radius-sm);
+      color: var(--text-muted); font-size: 14px; font-weight: 500;
+      cursor: pointer; transition: all .2s; margin-bottom: 4px;
+      text-decoration: none;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+    .nav-item.active { background: rgba(99,102,241,0.12); color: var(--primary); }
+    .nav-item .icon { font-size: 18px; width: 20px; text-align: center; }
+    .sidebar-bottom {
+      padding: 16px 12px 24px;
+      border-top: 1px solid var(--card-border);
+    }
+    .sidebar-user {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; border-radius: var(--radius-sm);
+    }
+    .sidebar-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; flex-shrink: 0;
+    }
+    .sidebar-user-info .name { font-size: 13px; font-weight: 600; }
+    .sidebar-user-info .plan { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── MAIN ── */
+    .main { margin-left: 240px; flex: 1; min-height: 100vh; }
+
+    .topbar {
+      padding: 20px 32px; border-bottom: 1px solid var(--card-border);
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(8,10,15,0.8); backdrop-filter: blur(10px);
+      position: sticky; top: 0; z-index: 40;
+    }
+    .topbar-title h1 { font-size: 20px; font-weight: 700; }
+    .topbar-title p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+    .content { padding: 32px; max-width: 900px; }
+
+    /* ── TABS ── */
+    .tabs {
+      display: flex; gap: 4px; margin-bottom: 32px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 4px;
+    }
+    .tab {
+      padding: 12px 20px; border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      font-size: 14px; font-weight: 600; color: var(--text-muted);
+      cursor: pointer; transition: all .2s;
+      background: none; border: none; font-family: inherit;
+    }
+    .tab:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+    .tab.active {
+      color: var(--primary);
+      background: rgba(99,102,241,0.1);
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── FORM ── */
+    .form-card {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: var(--radius); padding: 28px; margin-bottom: 20px;
+    }
+    .form-card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .form-card-title { font-size: 16px; font-weight: 700; }
+    .form-card-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block; font-size: 13px; font-weight: 600;
+      margin-bottom: 8px; color: rgba(255,255,255,0.8);
+    }
+    .form-group .hint {
+      font-size: 12px; color: var(--text-muted); margin-top: 6px;
+    }
+    input[type=text], input[type=email], input[type=password], select, textarea {
+      width: 100%; padding: 12px 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      color: var(--text); font-size: 14px; font-family: inherit;
+      outline: none; transition: border-color .2s;
+    }
+    input::placeholder, textarea::placeholder { color: var(--text-muted); }
+    input:focus, textarea:focus, select:focus { border-color: var(--primary); }
+    textarea { min-height: 120px; resize: vertical; }
+    select {
+      cursor: pointer; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 40px;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .btn {
+      padding: 12px 24px; border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit;
+      transition: all .2s; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn.primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff; border: none;
+    }
+    .btn.primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn.ghost {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      color: var(--text);
+    }
+    .btn.ghost:hover { border-color: rgba(255,255,255,0.2); }
+    .btn.danger {
+      background: rgba(244,63,94,0.1); border: 1px solid rgba(244,63,94,0.3);
+      color: var(--red);
+    }
+    .btn.danger:hover { background: rgba(244,63,94,0.2); }
+
+    /* ── PLAN CARD ── */
+    .plan-current {
+      background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.1));
+      border: 1px solid rgba(99,102,241,0.3);
+      border-radius: var(--radius); padding: 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .plan-info h3 { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+    .plan-info p { font-size: 13px; color: var(--text-muted); }
+    .plan-price { text-align: right; }
+    .plan-price .amount { font-size: 28px; font-weight: 800; }
+    .plan-price .period { font-size: 13px; color: var(--text-muted); }
+
+    .usage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+    .usage-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm); padding: 16px; text-align: center;
+    }
+    .usage-card .value { font-size: 24px; font-weight: 800; }
+    .usage-card .label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
+    .usage-card .bar {
+      height: 4px; background: rgba(255,255,255,0.1);
+      border-radius: 2px; margin-top: 12px; overflow: hidden;
+    }
+    .usage-card .bar-fill { height: 100%; background: var(--primary); border-radius: 2px; }
+
+    .plan-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .plan-option {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: var(--radius); padding: 24px; text-align: center;
+      cursor: pointer; transition: all .2s;
+    }
+    .plan-option:hover { border-color: rgba(255,255,255,0.2); }
+    .plan-option.active {
+      border-color: var(--primary);
+      background: rgba(99,102,241,0.08);
+    }
+    .plan-option .name { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .plan-option .price { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
+    .plan-option .fee { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+    .plan-option .features { list-style: none; font-size: 12px; text-align: left; }
+    .plan-option .features li { padding: 6px 0; color: rgba(255,255,255,0.7); }
+    .plan-option .features li::before { content: '✓ '; color: var(--green); }
+
+    /* ── TEMPLATE EDITOR ── */
+    .template-tabs {
+      display: flex; gap: 8px; margin-bottom: 20px;
+    }
+    .template-tab {
+      padding: 10px 16px; border-radius: var(--radius-sm);
+      font-size: 13px; font-weight: 600; color: var(--text-muted);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid transparent;
+      cursor: pointer; transition: all .2s;
+    }
+    .template-tab:hover { color: var(--text); }
+    .template-tab.active {
+      color: var(--primary);
+      border-color: var(--primary);
+      background: rgba(99,102,241,0.1);
+    }
+    .template-editor { display: none; }
+    .template-editor.active { display: block; }
+    .template-preview {
+      background: #fff; color: #1a1a1a;
+      border-radius: var(--radius-sm); padding: 24px;
+      margin-top: 16px;
+    }
+    .template-preview h4 {
+      font-size: 16px; font-weight: 600; margin-bottom: 12px;
+      color: #111;
+    }
+    .template-preview p { font-size: 14px; line-height: 1.6; color: #333; }
+
+    /* ── WEBHOOK ── */
+    .webhook-url {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm); padding: 14px 16px;
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 13px; color: rgba(255,255,255,0.8);
+      word-break: break-all;
+    }
+    .copy-btn {
+      padding: 8px 14px; border-radius: 6px;
+      font-size: 12px; font-weight: 600;
+      background: var(--primary); color: #fff;
+      border: none; cursor: pointer; font-family: inherit;
+      white-space: nowrap;
+    }
+    .copy-btn:hover { opacity: 0.9; }
+    .webhook-events {
+      margin-top: 20px;
+    }
+    .event-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; background: rgba(255,255,255,0.03);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm); margin-bottom: 8px;
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 13px;
+    }
+    .event-item .check {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: rgba(16,185,129,0.15);
+      color: var(--green); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 12px; flex-shrink: 0;
+    }
+
+    /* ── STRIPE STATUS ── */
+    .stripe-status {
+      display: flex; align-items: center; gap: 16px;
+      padding: 20px; background: rgba(16,185,129,0.08);
+      border: 1px solid rgba(16,185,129,0.2);
+      border-radius: var(--radius-sm); margin-bottom: 20px;
+    }
+    .stripe-status.pending {
+      background: rgba(245,158,11,0.08);
+      border-color: rgba(245,158,11,0.2);
+    }
+    .stripe-status .icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .stripe-status.connected .icon { background: rgba(16,185,129,0.15); }
+    .stripe-status.pending .icon { background: rgba(245,158,11,0.15); }
+    .stripe-status h4 { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .stripe-status p { font-size: 12px; color: var(--text-muted); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .main { margin-left: 0; }
+      .content { padding: 20px; }
+      .form-row { grid-template-columns: 1fr; }
+      .usage-grid { grid-template-columns: 1fr; }
+      .plan-options { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">Retriev</div>
+  <nav class="sidebar-nav">
+    <a href="dashboard.html" class="nav-item">
+      <span class="icon">📊</span> Overview
+    </a>
+    <a href="#" class="nav-item">
+      <span class="icon">💳</span> Payments
+    </a>
+    <a href="#" class="nav-item">
+      <span class="icon">📧</span> Sequences
+    </a>
+    <a href="analytics.html" class="nav-item">
+      <span class="icon">📈</span> Analytics
+    </a>
+    <a href="settings.html" class="nav-item active">
+      <span class="icon">⚙️</span> Settings
+    </a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar">U</div>
+      <div class="sidebar-user-info">
+        <div class="name">Loading...</div>
+        <div class="plan">Free Trial</div>
+      </div>
+    </div>
+    <a href="#" onclick="logout(); return false;" class="nav-item" style="margin-top:8px;font-size:12px;color:var(--text-muted)">
+      <span class="icon">🚪</span> Sign out
+    </a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-title">
+      <h1>Settings</h1>
+      <p>Manage your account and preferences</p>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab active" data-tab="profile">Profile</button>
+      <button class="tab" data-tab="billing">Plan & Billing</button>
+      <button class="tab" data-tab="templates">Email Templates</button>
+      <button class="tab" data-tab="integrations">Integrations</button>
+    </div>
+
+    <!-- PROFILE TAB -->
+    <div class="tab-panel active" id="profile">
+      <div class="form-card">
+        <div class="form-card-header">
+          <div>
+            <div class="form-card-title">Personal Information</div>
+            <div class="form-card-sub">Update your account details</div>
+          </div>
+        </div>
+
+        <form id="profileForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First name</label>
+              <input type="text" id="firstName" placeholder="Jane">
+            </div>
+            <div class="form-group">
+              <label>Last name</label>
+              <input type="text" id="lastName" placeholder="Doe">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email address</label>
+            <input type="email" id="email" placeholder="jane@company.com">
+            <p class="hint">Changing your email will require verification</p>
+          </div>
+          <div class="form-group">
+            <label>Company name</label>
+            <input type="text" id="company" placeholder="Acme Inc.">
+          </div>
+          <button type="submit" class="btn primary">Save Changes</button>
+        </form>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-header">
+          <div>
+            <div class="form-card-title">Password</div>
+            <div class="form-card-sub">Change your password</div>
+          </div>
+        </div>
+        <form id="passwordForm">
+          <div class="form-group">
+            <label>Current password</label>
+            <input type="password" id="currentPassword" placeholder="Enter current password">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>New password</label>
+              <input type="password" id="newPassword" placeholder="Min. 8 characters" minlength="8">
+            </div>
+            <div class="form-group">
+              <label>Confirm new password</label>
+              <input type="password" id="confirmPassword" placeholder="Re-enter new password">
+            </div>
+          </div>
+          <button type="submit" class="btn primary">Update Password</button>
+        </form>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-header">
+          <div>
+            <div class="form-card-title" style="color:var(--red)">Danger Zone</div>
+            <div class="form-card-sub">Irreversible actions</div>
+          </div>
+        </div>
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px">
+          Once you delete your account, there is no going back. Please be certain.
+        </p>
+        <button class="btn danger" onclick="if(confirm('Are you sure? This cannot be undone.')) alert('Account deletion requested.')">
+          Delete Account
+        </button>
+      </div>
+    </div>
+
+    <!-- BILLING TAB -->
+    <div class="tab-panel" id="billing">
+      <div class="plan-current">
+        <div class="plan-info">
+          <h3 id="currentPlanName">Free Trial</h3>
+          <p id="currentPlanDesc">14-day trial · No credit card required</p>
+        </div>
+        <div class="plan-price">
+          <div class="amount" id="currentPlanPrice">$0</div>
+          <div class="period">for 14 days</div>
+        </div>
+      </div>
+
+      <div class="usage-grid">
+        <div class="usage-card">
+          <div class="value">14</div>
+          <div class="label">Days Remaining</div>
+        </div>
+        <div class="usage-card">
+          <div class="value">$0</div>
+          <div class="label">Recovered This Month</div>
+        </div>
+        <div class="usage-card">
+          <div class="value">0</div>
+          <div class="label">Active Sequences</div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-header">
+          <div>
+            <div class="form-card-title">Upgrade Your Plan</div>
+            <div class="form-card-sub">Choose a plan to continue after your trial</div>
+          </div>
+        </div>
+
+        <div class="plan-options">
+          <div class="plan-option" onclick="selectPlan('starter')">
+            <div class="name">Starter</div>
+            <div class="price">$29</div>
+            <div class="fee">+ 8% of recovered</div>
+            <ul class="features">
+              <li>Up to $5k recovered/mo</li>
+              <li>3 email templates</li>
+              <li>Basic analytics</li>
+              <li>Email support</li>
+            </ul>
+          </div>
+          <div class="plan-option active" onclick="selectPlan('growth')">
+            <div class="name" style="color:var(--primary)">Growth</div>
+            <div class="price">$99</div>
+            <div class="fee">+ 5% of recovered</div>
+            <ul class="features">
+              <li>Up to $50k recovered/mo</li>
+              <li>AI-optimized timing</li>
+              <li>Full analytics suite</li>
+              <li>Priority support</li>
+            </ul>
+          </div>
+          <div class="plan-option" onclick="selectPlan('scale')">
+            <div class="name">Scale</div>
+            <div class="price">$299</div>
+            <div class="fee">+ 3% of recovered</div>
+            <ul class="features">
+              <li>Unlimited recovery</li>
+              <li>Custom templates</li>
+              <li>API access</li>
+              <li>Dedicated support</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="margin-top:24px">
+          <button class="btn primary" onclick="alert('Stripe checkout would open here')">Upgrade Plan →</button>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-header">
+          <div>
+            <div class="form-card-title">Billing History</div>
+            <div class="form-card-sub">Past invoices and receipts</div>
+          </div>
+        </div>
+        <p style="font-size:14px;color:var(--text-muted)">No billing history yet. Your first invoice will appear here after your trial ends.</p>
+      </div>
+    </div>
+
+    <!-- TEMPLATES TAB -->
+    <div class="tab-panel" id="templates">
+      <div class="form-card">
+        <div class="form-card-header">
+          <div>
+            <div class="form-card-title">Recovery Email Templates</div>
+            <div class="form-card-sub">Customize the emails sent during dunning sequences</div>
+          </div>
+        </div>
+
+        <div class="template-tabs">
+          <button class="template-tab active" data-template="day1">Day 1</button>
+          <button class="template-tab" data-template="day3">Day 3</button>
+          <button class="template-tab" data-template="day7">Day 7</button>
+          <button class="template-tab" data-template="day14">Day 14</button>
+        </div>
+
+        <!-- Day 1 Template -->
+        <div class="template-editor active" id="template-day1">
+          <div class="form-group">
+            <label>Subject Line</label>
+            <input type="text" value="Quick heads up: Your recent payment didn't go through">
+          </div>
+          <div class="form-group">
+            <label>Email Body</label>
+            <textarea>Hi {{customer_name}},
+
+We noticed your recent payment of {{amount}} didn't go through. No worries — it happens!
+
+Could you take a moment to check your payment details? Just click the link below to update your card:
+
+{{update_link}}
+
+Your subscription is still active, and we'll retry the payment automatically. But updating your info ensures no interruption to your service.
+
+Questions? Just reply to this email — we're here to help.
+
+Best,
+{{company_name}} Team</textarea>
+          </div>
+          <div class="form-group">
+            <label>Tone</label>
+            <select>
+              <option value="friendly" selected>Friendly</option>
+              <option value="professional">Professional</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+          <div class="template-preview">
+            <h4>Quick heads up: Your recent payment didn't go through</h4>
+            <p>Hi Sarah,</p>
+            <p>We noticed your recent payment of $49.00 didn't go through. No worries — it happens!</p>
+            <p>Could you take a moment to check your payment details? Just click the link below to update your card:</p>
+            <p><a href="#" style="color:#6366f1">Update Payment Method →</a></p>
+            <p>Your subscription is still active, and we'll retry the payment automatically. But updating your info ensures no interruption to your service.</p>
+            <p>Questions? Just reply to this email — we're here to help.</p>
+            <p>Best,<br>Acme Team</p>
+          </div>
+        </div>
+
+        <!-- Day 3 Template -->
+        <div class="template-editor" id="template-day3">
+          <div class="form-group">
+            <label>Subject Line</label>
+            <input type="text" value="Still time to update your payment details">
+          </div>
+          <div class="form-group">
+            <label>Email Body</label>
+            <textarea>Hi {{customer_name}},
+
+Just a friendly reminder that we're still unable to process your payment of {{amount}}.
+
+We've tried a couple of times, but your card on file seems to be having issues. The quickest fix is to update your payment method:
+
+{{update_link}}
+
+Don't worry — your account is still active. But to keep everything running smoothly, please update your info when you get a chance.
+
+Thanks for being a valued customer!
+
+Warmly,
+{{company_name}} Team</textarea>
+          </div>
+          <div class="form-group">
+            <label>Tone</label>
+            <select>
+              <option value="friendly" selected>Friendly</option>
+              <option value="professional">Professional</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Day 7 Template -->
+        <div class="template-editor" id="template-day7">
+          <div class="form-group">
+            <label>Subject Line</label>
+            <input type="text" value="Important: Your subscription is at risk">
+          </div>
+          <div class="form-group">
+            <label>Email Body</label>
+            <textarea>Hi {{customer_name}},
+
+We've tried several times to process your payment of {{amount}}, but unfortunately we haven't been successful.
+
+To avoid any interruption to your service, please update your payment details as soon as possible:
+
+{{update_link}}
+
+We value having you as a customer and want to make sure you don't lose access to your account. If you're having any issues or have questions, please reach out — we're happy to help.
+
+Thanks,
+{{company_name}} Team</textarea>
+          </div>
+          <div class="form-group">
+            <label>Tone</label>
+            <select>
+              <option value="friendly">Friendly</option>
+              <option value="professional" selected>Professional</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Day 14 Template -->
+        <div class="template-editor" id="template-day14">
+          <div class="form-group">
+            <label>Subject Line</label>
+            <input type="text" value="Final notice: Update payment to keep your account">
+          </div>
+          <div class="form-group">
+            <label>Email Body</label>
+            <textarea>Hi {{customer_name}},
+
+This is our final attempt to recover your payment of {{amount}}. Unfortunately, if we don't receive payment soon, your account will be paused.
+
+Please update your payment details immediately to avoid any disruption:
+
+{{update_link}}
+
+If you no longer wish to continue your subscription, you can cancel anytime from your account settings. But we'd love to keep you as a customer!
+
+If there's anything we can help with, just reply to this email.
+
+{{company_name}} Team</textarea>
+          </div>
+          <div class="form-group">
+            <label>Tone</label>
+            <select>
+              <option value="friendly">Friendly</option>
+              <option value="professional">Professional</option>
+              <option value="urgent" selected>Urgent</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top:24px">
+          <button class="btn primary" onclick="saveTemplates()">Save All Templates</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTEGRATIONS TAB -->
+    <div class="tab-panel" id="integrations">
+      <div class="form-card">
+        <div class="form-card-header">
+          <div>
+            <div class="form-card-title">Stripe Integration</div>
+            <div class="form-card-sub">Connect Stripe to enable payment recovery</div>
+          </div>
+        </div>
+
+        <div class="stripe-status pending" id="stripeStatus">
+          <div class="icon">⚡</div>
+          <div style="flex:1">
+            <h4 id="stripeStatusTitle">Stripe Not Connected</h4>
+            <p id="stripeStatusDesc">Connect your Stripe account to start recovering failed payments</p>
+          </div>
+          <button class="btn primary" onclick="connectStripe()">Connect Stripe</button>
+        </div>
+
+        <div class="form-group">
+          <label>Stripe Account ID</label>
+          <input type="text" id="stripeAccountId" placeholder="Not connected" disabled style="opacity:0.5">
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-header">
+          <div>
+            <div class="form-card-title">Webhook Configuration</div>
+            <div class="form-card-sub">Add this endpoint to your Stripe dashboard</div>
+          </div>
+        </div>
+
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px">
+          To receive real-time payment events, add this webhook URL to your Stripe dashboard under <strong>Developers → Webhooks</strong>.
+        </p>
+
+        <div class="webhook-url">
+          <span style="flex:1">https://retriev-api.garytuohy.workers.dev/api/webhook</span>
+          <button class="copy-btn" onclick="copyWebhook()">Copy</button>
+        </div>
+
+        <div class="webhook-events">
+          <p style="font-size:13px;font-weight:600;margin-bottom:12px">Events to enable:</p>
+          <div class="event-item">
+            <span class="check">✓</span>
+            <code>payment_intent.payment_failed</code>
+          </div>
+          <div class="event-item">
+            <span class="check">✓</span>
+            <code>invoice.payment_failed</code>
+          </div>
+          <div class="event-item">
+            <span class="check">✓</span>
+            <code>customer.subscription.deleted</code>
+          </div>
+          <div class="event-item">
+            <span class="check">✓</span>
+            <code>invoice.paid</code>
+          </div>
+        </div>
+
+        <p style="font-size:12px;color:var(--text-muted);margin-top:16px">
+          💡 <strong>Tip:</strong> In Stripe Dashboard, go to Developers → Webhooks → Add endpoint. Paste the URL above and select the events listed.
+        </p>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-header">
+          <div>
+            <div class="form-card-title">API Access</div>
+            <div class="form-card-sub">For programmatic access (Scale plan)</div>
+          </div>
+        </div>
+
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px">
+          API access is available on the Scale plan. Upgrade to generate API keys for integrations.
+        </p>
+
+        <button class="btn ghost" disabled>Generate API Key (Scale Plan)</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+// Auth check
+const user = JSON.parse(localStorage.getItem('retriev_user') || 'null');
+if (!user) {
+  window.location.href = 'login.html';
+}
+
+// Update sidebar with user info
+if (user) {
+  const initials = ((user.firstName?.[0] || '') + (user.lastName?.[0] || '')).toUpperCase() || 'U';
+  const avatarEl = document.querySelector('.sidebar-avatar');
+  if (avatarEl) avatarEl.textContent = initials;
+  
+  const nameEl = document.querySelector('.sidebar-user-info .name');
+  if (nameEl) nameEl.textContent = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'User';
+  
+  const planEl = document.querySelector('.sidebar-user-info .plan');
+  if (planEl) planEl.textContent = user.plan === 'trial' ? 'Free Trial' : user.plan;
+
+  // Populate profile form
+  document.getElementById('firstName').value = user.firstName || '';
+  document.getElementById('lastName').value = user.lastName || '';
+  document.getElementById('email').value = user.email || '';
+  document.getElementById('company').value = user.company || '';
+
+  // Update Stripe status
+  if (user.stripeCustomerId) {
+    document.getElementById('stripeStatus').classList.remove('pending');
+    document.getElementById('stripeStatus').classList.add('connected');
+    document.getElementById('stripeStatusTitle').textContent = 'Stripe Connected';
+    document.getElementById('stripeStatusDesc').textContent = 'Your Stripe account is connected and receiving events';
+    document.getElementById('stripeAccountId').value = user.stripeCustomerId;
+    document.getElementById('stripeAccountId').disabled = false;
+    document.getElementById('stripeAccountId').style.opacity = '1';
+  }
+}
+
+// Tab switching
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
+});
+
+// Template tab switching
+document.querySelectorAll('.template-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.template-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.template-editor').forEach(e => e.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('template-' + tab.dataset.template).classList.add('active');
+  });
+});
+
+// Plan selection
+function selectPlan(plan) {
+  document.querySelectorAll('.plan-option').forEach(p => p.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+// Save profile
+document.getElementById('profileForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type="submit"]');
+  btn.textContent = 'Saving...';
+  
+  // In production, this would call /api/auth/me or similar
+  const user = JSON.parse(localStorage.getItem('retriev_user') || '{}');
+  user.firstName = document.getElementById('firstName').value;
+  user.lastName = document.getElementById('lastName').value;
+  user.email = document.getElementById('email').value;
+  user.company = document.getElementById('company').value;
+  localStorage.setItem('retriev_user', JSON.stringify(user));
+  
+  setTimeout(() => {
+    btn.textContent = 'Saved!';
+    setTimeout(() => btn.textContent = 'Save Changes', 1500);
+  }, 500);
+});
+
+// Copy webhook URL
+function copyWebhook() {
+  navigator.clipboard.writeText('https://retriev-api.garytuohy.workers.dev/api/webhook');
+  const btn = document.querySelector('.copy-btn');
+  btn.textContent = 'Copied!';
+  setTimeout(() => btn.textContent = 'Copy', 1500);
+}
+
+// Connect Stripe
+function connectStripe() {
+  alert('Stripe Connect OAuth would redirect here.\n\nIn production:\n1. User is redirected to Stripe OAuth\n2. User authorizes Retriev\n3. Stripe redirects back with auth code\n4. Backend exchanges code for access token');
+}
+
+// Save templates
+function saveTemplates() {
+  alert('Templates saved successfully!');
+}
+
+// Logout
+function logout() {
+  localStorage.removeItem('retriev_token');
+  localStorage.removeItem('retriev_user');
+  window.location.href = 'login.html';
+}
+</script>
+</body>
+</html>
