@@ -151,79 +151,111 @@
       overflow: hidden;
     }
     
-    /* Mesh gradient background */
+    /* Rich layered background */
     .hero-bg {
       position: absolute;
       inset: 0;
       z-index: 0;
+      background: 
+        radial-gradient(ellipse 100% 80% at 50% -20%, rgba(99, 102, 241, 0.25) 0%, transparent 50%),
+        radial-gradient(ellipse 80% 60% at 80% 20%, rgba(139, 92, 246, 0.2) 0%, transparent 40%),
+        radial-gradient(ellipse 60% 80% at 20% 80%, rgba(16, 185, 129, 0.15) 0%, transparent 40%),
+        radial-gradient(ellipse 40% 60% at 90% 90%, rgba(236, 72, 153, 0.1) 0%, transparent 40%),
+        linear-gradient(180deg, transparent 0%, var(--bg) 100%);
     }
     .hero-bg::before {
       content: '';
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: 
-        radial-gradient(ellipse 40% 30% at 30% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse 35% 40% at 70% 30%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
-        radial-gradient(ellipse 50% 30% at 50% 70%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse 30% 50% at 80% 60%, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
-      animation: meshMove 20s ease-in-out infinite alternate;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      mix-blend-mode: overlay;
     }
-    @keyframes meshMove {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      100% { transform: translate(2%, 2%) rotate(2deg); }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 30% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 25%),
+        radial-gradient(circle at 70% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 25%),
+        radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.08) 0%, transparent 30%);
+      animation: pulseGlow 10s ease-in-out infinite alternate;
+    }
+    @keyframes pulseGlow {
+      0% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+      100% { opacity: 0.6; transform: scale(1); }
     }
     
-    /* Grid pattern overlay */
+    /* Perspective grid pattern */
     .hero-grid {
       position: absolute;
       inset: 0;
       z-index: 1;
-      background-image: 
-        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 80px 80px;
-      mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black 0%, transparent 70%);
+      background: 
+        linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      transform: perspective(500px) rotateX(60deg);
+      transform-origin: center top;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 60%);
+    }
+    .hero-grid-2 {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: 
+        linear-gradient(rgba(139, 92, 246, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139, 92, 246, 0.02) 1px, transparent 1px);
+      background-size: 120px 120px;
+      mask-image: radial-gradient(ellipse 80% 50% at 50% 50%, rgba(0,0,0,0.2) 0%, transparent 70%);
     }
     
-    /* Floating orbs */
+    /* Dynamic gradient orbs */
     .orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.6;
-      animation: float 8s ease-in-out infinite;
+      filter: blur(80px);
+      animation: orbFloat 15s ease-in-out infinite;
+      mix-blend-mode: screen;
     }
     .orb-1 {
-      width: 400px;
-      height: 400px;
-      background: var(--indigo);
-      top: 10%;
-      left: 10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, rgba(139, 92, 246, 0.2) 50%, transparent 70%);
+      top: -10%;
+      left: -5%;
       animation-delay: 0s;
     }
     .orb-2 {
-      width: 300px;
-      height: 300px;
-      background: var(--violet);
-      top: 60%;
-      right: 10%;
-      animation-delay: -3s;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, rgba(236, 72, 153, 0.15) 50%, transparent 70%);
+      top: 40%;
+      right: -10%;
+      animation-delay: -5s;
     }
     .orb-3 {
-      width: 200px;
-      height: 200px;
-      background: var(--emerald);
-      bottom: 10%;
-      left: 30%;
-      animation-delay: -6s;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, rgba(6, 182, 212, 0.15) 50%, transparent 70%);
+      bottom: -5%;
+      left: 20%;
+      animation-delay: -10s;
     }
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0); }
-      33% { transform: translate(30px, -30px); }
-      66% { transform: translate(-20px, 20px); }
+    .orb-4 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(251, 146, 60, 0.2) 0%, transparent 70%);
+      top: 20%;
+      right: 30%;
+      animation-delay: -7s;
+    }
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(50px, -30px) scale(1.1); }
+      50% { transform: translate(-30px, 50px) scale(0.95); }
+      75% { transform: translate(40px, 20px) scale(1.05); }
     }
 
     .hero-content {
@@ -401,15 +433,20 @@
       .preview-main { grid-template-columns: 1fr; }
     }
 
-    /* Problem Section */
+    /* Problem Section with gradient */
     .problem {
       padding: 120px 24px;
       position: relative;
+      overflow: hidden;
     }
-    .problem-bg {
+    .problem::before {
+      content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, transparent 0%, rgba(99, 102, 241, 0.02) 50%, transparent 100%);
+      background: 
+        linear-gradient(180deg, var(--bg) 0%, rgba(99, 102, 241, 0.03) 50%, var(--bg) 100%),
+        radial-gradient(ellipse 80% 50% at 20% 50%, rgba(239, 68, 68, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 30%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
     }
     .section-inner {
       position: relative;
@@ -524,11 +561,28 @@
       line-height: 1.6;
     }
 
-    /* Features Section */
+    /* Features with subtle pattern */
     .features {
       padding: 120px 24px;
       background: var(--bg-elevated);
       position: relative;
+      overflow: hidden;
+    }
+    .features::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse 100% 60% at 50% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 80% at 0% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 40%),
+        radial-gradient(ellipse 60% 80% at 100% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
+    }
+    .features::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.5;
     }
     .features-grid {
       display: grid;
@@ -696,9 +750,19 @@
       color: var(--text-muted);
     }
 
-    /* Pricing */
+    /* Pricing with gradient background */
     .pricing {
       padding: 120px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .pricing::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse 80% 50% at 50% 100%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 20% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
     }
     .pricing-grid {
       display: grid;
@@ -802,18 +866,27 @@
       line-height: 1.7;
     }
 
-    /* CTA */
+    /* CTA with strong gradient */
     .cta {
       padding: 120px 24px;
       text-align: center;
       position: relative;
       overflow: hidden;
     }
-    .cta-bg {
+    .cta::before {
+      content: '';
       position: absolute;
       inset: 0;
       background: 
-        radial-gradient(ellipse 60% 40% at 50% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 60%);
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.1) 40%, transparent 70%),
+        radial-gradient(circle at 20% 60%, rgba(16, 185, 129, 0.15) 0%, transparent 30%),
+        radial-gradient(circle at 80% 40%, rgba(236, 72, 153, 0.1) 0%, transparent 30%);
+    }
+    .cta::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm63 31c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zM34 90c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm56-76c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-6c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
     }
     .cta-content {
       position: relative;
@@ -891,9 +964,11 @@
   <section class="hero">
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
+    <div class="hero-grid-2"></div>
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
     
     <div class="hero-content">
       <div class="hero-badge">
@@ -955,9 +1030,8 @@
     </div>
   </section>
 
-  <!-- Problem -->
+    <!-- Problem -->
   <section class="problem" id="problem">
-    <div class="problem-bg"></div>
     <div class="section-inner">
       <div class="section-header">
         <span class="section-label">The problem</span>
@@ -1219,7 +1293,6 @@
 
   <!-- CTA -->
   <section class="cta">
-    <div class="cta-bg"></div>
     <div class="cta-content">
       <h2>Start recovering revenue this week</h2>
       <p>Connect Stripe in 2 minutes. Most customers see their first recovery within 48 hours.</p>
